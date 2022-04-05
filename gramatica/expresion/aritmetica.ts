@@ -1,5 +1,5 @@
 import { Expresion } from "./expresion";
-import { Retorno } from "./retorno";
+import { Retorno,tipo } from "./retorno";
 
 export class Aritmetica extends Expresion {
 
@@ -11,6 +11,42 @@ export class Aritmetica extends Expresion {
         const ValorIz = this.izquierda.ejecutar();
         const ValorDer = this.derecha.ejecutar();
         const Dom = this.tipoDom(ValorIz.type,ValorDer.type)
+        if(this.tipo == tipoArit.SUMA){
+            if (Dom == tipo.STRING) {
+                return { valor: (ValorIz.valor.toString() + ValorDer.valor.toString()), type: tipo.STRING };
+            }else if (Dom == tipo.NUMERO) {
+                return { valor: (ValorIz.valor + ValorDer.valor), type: tipo.NUMERO };
+            } 
+            else {
+                console.log("Error")
+            }
+        }else if (this.tipo == tipoArit.RESTA) {
+            if (Dom == tipo.NUMERO) {
+                return { valor: (ValorIz.valor - ValorDer.valor), type: tipo.NUMERO };
+            } 
+            else {
+                console.log("Error")
+            }
+        }else if (this.tipo == tipoArit.MULTIPLICACION) {
+            if (Dom == tipo.NUMERO) {
+                return { valor: (ValorIz.valor * ValorDer.valor), type: tipo.NUMERO };
+            } 
+            else {
+                console.log("Error")
+            }
+        }else if (this.tipo == tipoArit.DIVISION) {
+            if (Dom == tipo.NUMERO) {
+                if (ValorDer.valor == 0) {
+                    console.log("Error")
+                } 
+                else {
+                    return { valor: (ValorIz.valor / ValorDer.valor), type: tipo.NUMERO };
+                }
+            } 
+            else {
+                console.log("Error")
+            }
+        }
         return null;
     }
     

@@ -4,16 +4,16 @@ import { Retorno, tipo } from "./retorno";
 
 export class Nativo extends Expresion {
 
-    constructor(private valor: any,private tipon: tipoNat,  fila: number, columna: number) {
+    constructor(private valor: any,private tipoN: tipoNat,  fila: number, columna: number) {
         super(fila, columna);
     }
     
     public ejecutar(): Retorno {
-        if(this.tipon==tipoNat.NUMERO){
+        if(this.tipoN==tipoNat.NUMERO){
             return{valor:Number(this.valor),type:tipo.NUMERO}
-        } else if (this.tipon == tipoNat.STRING) {
+        } else if (this.tipoN == tipoNat.STRING) {
             return { valor: this.valor.toString(), type: tipo.STRING };
-        } else if (this.tipon ==tipoNat.BOOLEAN) {
+        } else if (this.tipoN ==tipoNat.BOOLEAN) {
             if (this.valor.toString().toLowerCase() == "true") {
                 return { valor: true, type: tipo.BOOLEAN }
             }

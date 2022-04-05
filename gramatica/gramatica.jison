@@ -1,5 +1,7 @@
 %{
- // imports
+ const {Aritmetica,tipoArit} = require('./expresion/aritmetica')
+    const {Relacional,TipoRel} = require('./expresion/relaciones')
+    const {Nativo,TipoNat} = require('./expresion/nativo')
 %}
 
 %lex
@@ -50,12 +52,11 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION     {if($2!=false)$1.push($2);$$=$1;}
             |INSTRUCCION                     {$$=($1!=false) ?[$1]:[];}
 ;
 
-INSTRUCCION: IMPRIMIR                            {$$=$1;}
-            |ARITMETICA                          {$$=$1;} 
+INSTRUCCION: ARITMETICA                          {$$=$1;} 
 ;
 
-IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new print.default($3,@1.first_line,@1.first_column);}
-;
+//IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new print.default($3,@1.first_line,@1.first_column);}
+//;
 
 ARITMETICA : menos ARITMETICA %prec Umenos      {$$ = 0 - $2} 
         | ARITMETICA mas ARITMETICA             {$$ = $1 + $3}
