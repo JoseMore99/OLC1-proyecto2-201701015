@@ -1,4 +1,4 @@
-import { type } from "express/lib/response";
+//import { type } from "express/lib/response";
 import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 
@@ -9,6 +9,8 @@ export class Nativo extends Expresion {
     }
     
     public ejecutar(): Retorno {
+        
+        console.log(this.tipoN)
         if(this.tipoN==tipoNat.NUMERO){
             return{valor:Number(this.valor),type:tipo.NUMERO}
         } else if (this.tipoN == tipoNat.STRING) {
@@ -19,9 +21,10 @@ export class Nativo extends Expresion {
             }
             return { valor: false, type: tipo.BOOLEAN }
         }
-        return null;
+        return { valor: null, type: tipo.NULL }
+    };
     }
-}
+
 export enum tipoNat {
     NUMERO,
     STRING,

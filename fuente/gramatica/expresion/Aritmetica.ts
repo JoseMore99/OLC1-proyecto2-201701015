@@ -47,7 +47,7 @@ export class Aritmetica extends Expresion {
                 console.log("Error")
             }
         }
-        return null;
+        return { valor: null, type: tipo.NULL } ;
     }
     
 }

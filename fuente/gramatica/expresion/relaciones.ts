@@ -1,4 +1,4 @@
-import { Expresion } from "./Expresion";
+import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 export class Relacional extends Expresion {
 
@@ -28,7 +28,7 @@ export class Relacional extends Expresion {
             const result = ValorIz.valor <= ValorDer.valor
             return { valor: result, type: tipo.BOOLEAN }
         }
-
+        return { valor: null, type: tipo.NULL }
     }
 }
 
