@@ -10,7 +10,6 @@ export class Nativo extends Expresion {
     
     public ejecutar(): Retorno {
         
-        console.log(this.tipoN)
         if(this.tipoN==tipoNat.NUMERO){
             return{valor:Number(this.valor),type:tipo.NUMERO}
         } else if (this.tipoN == tipoNat.STRING) {

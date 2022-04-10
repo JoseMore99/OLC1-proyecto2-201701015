@@ -18,33 +18,33 @@ export class Aritmetica extends Expresion {
                 return { valor: (ValorIz.valor + ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
-                console.log("Error")
+                console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.RESTA) {
             if (Dom == tipo.NUMERO) {
                 return { valor: (ValorIz.valor - ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
-                console.log("Error")
+                console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.MULTIPLICACION) {
             if (Dom == tipo.NUMERO) {
                 return { valor: (ValorIz.valor * ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
-                console.log("Error")
+                console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.DIVISION) {
             if (Dom == tipo.NUMERO) {
                 if (ValorDer.valor == 0) {
-                    console.log("Error")
+                    console.log("Error Semantico")
                 } 
                 else {
                     return { valor: (ValorIz.valor / ValorDer.valor), type: tipo.NUMERO };
                 }
             } 
             else {
-                console.log("Error")
+                console.log("Error Semantico")
             }
         }
         return { valor: null, type: tipo.NULL } ;

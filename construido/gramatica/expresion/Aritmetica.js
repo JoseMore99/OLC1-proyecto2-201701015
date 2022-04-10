@@ -22,7 +22,7 @@ class Aritmetica extends expresion_1.Expresion {
                 return { valor: (ValorIz.valor + ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
-                console.log("Error");
+                console.log("Error Semantico");
             }
         }
         else if (this.tipo == tipoArit.RESTA) {
@@ -30,7 +30,7 @@ class Aritmetica extends expresion_1.Expresion {
                 return { valor: (ValorIz.valor - ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
-                console.log("Error");
+                console.log("Error Semantico");
             }
         }
         else if (this.tipo == tipoArit.MULTIPLICACION) {
@@ -44,14 +44,14 @@ class Aritmetica extends expresion_1.Expresion {
         else if (this.tipo == tipoArit.DIVISION) {
             if (Dom == retorno_1.tipo.NUMERO) {
                 if (ValorDer.valor == 0) {
-                    console.log("Error");
+                    console.log("Error Semantico");
                 }
                 else {
                     return { valor: (ValorIz.valor / ValorDer.valor), type: retorno_1.tipo.NUMERO };
                 }
             }
             else {
-                console.log("Error");
+                console.log("Error Semantico");
             }
         }
         return { valor: null, type: retorno_1.tipo.NULL };

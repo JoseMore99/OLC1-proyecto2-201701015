@@ -10,7 +10,7 @@ const PORT = 3000
 app.post('/', (req, res) => {
     const contenido = req.body.codigo
     const resultado = parser.parse(contenido)
-    console.log(resultado)
+    //console.log(resultado)
     try {
         console.log(resultado.ejecutar())
     } catch (error) {
