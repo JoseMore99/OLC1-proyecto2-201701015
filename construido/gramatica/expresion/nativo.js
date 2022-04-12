@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tipoNat = exports.Nativo = void 0;
-//import { type } from "express/lib/response";
 const expresion_1 = require("./expresion");
 const retorno_1 = require("./retorno");
 class Nativo extends expresion_1.Expresion {
@@ -10,8 +9,7 @@ class Nativo extends expresion_1.Expresion {
         this.valor = valor;
         this.tipoN = tipoN;
     }
-    ejecutar() {
-        console.log(this.tipoN);
+    ejecutar(ambito) {
         if (this.tipoN == tipoNat.NUMERO) {
             return { valor: Number(this.valor), type: retorno_1.tipo.NUMERO };
         }

@@ -1,5 +1,6 @@
 import { Expresion } from "./expresion";
 import { Retorno,tipo } from "./retorno";
+import { ambito } from "../simbolo/ambito";
 
 export class Aritmetica extends Expresion {
 
@@ -7,9 +8,9 @@ export class Aritmetica extends Expresion {
         super(fila, columna);
     }
     
-    public ejecutar(): Retorno {
-        const ValorIz = this.izquierda.ejecutar();
-        const ValorDer = this.derecha.ejecutar();
+    public ejecutar(ambito:ambito): Retorno {
+        const ValorIz = this.izquierda.ejecutar(ambito);
+        const ValorDer = this.derecha.ejecutar(ambito);
         const Dom = this.tipoDom(ValorIz.type,ValorDer.type)
         if(this.tipo == tipoArit.SUMA){
             if (Dom == tipo.STRING) {

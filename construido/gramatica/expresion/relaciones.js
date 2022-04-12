@@ -10,9 +10,9 @@ class Relacional extends expresion_1.Expresion {
         this.derecha = derecha;
         this.tipo = tipo;
     }
-    ejecutar() {
-        const ValorIz = this.izquierda.ejecutar();
-        const ValorDer = this.derecha.ejecutar();
+    ejecutar(ambito) {
+        const ValorIz = this.izquierda.ejecutar(ambito);
+        const ValorDer = this.derecha.ejecutar(ambito);
         if (this.tipo == TipoRel.IGUALIGUAL) {
             const result = ValorIz.valor == ValorDer.valor;
             return { valor: result, type: retorno_1.tipo.BOOLEAN };

@@ -1,4 +1,4 @@
-//import { type } from "express/lib/response";
+import { ambito } from "../simbolo/ambito";
 import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 
@@ -8,7 +8,7 @@ export class Nativo extends Expresion {
         super(fila, columna);
     }
     
-    public ejecutar(): Retorno {
+    public ejecutar(ambito:ambito): Retorno {
         
         if(this.tipoN==tipoNat.NUMERO){
             return{valor:Number(this.valor),type:tipo.NUMERO}

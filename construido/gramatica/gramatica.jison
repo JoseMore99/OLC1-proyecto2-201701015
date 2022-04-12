@@ -1,7 +1,10 @@
 %{
  const {Aritmetica,tipoArit} = require('./expresion/Aritmetica')
-    const {Relacional,TipoRel} = require('./expresion/relaciones')
-    const {Nativo,tipoNat} = require('./expresion/nativo')
+const {Relacional,TipoRel} = require('./expresion/relaciones')
+const {Variable} = require('./expresion/variable')
+const {Nativo,tipoNat} = require('./expresion/nativo')
+ const {Declarar} = require('./instrucciones/declarar')
+    const {Print} = require('./instrucciones/print')
 %}
 
 %lex
@@ -62,9 +65,9 @@ INSTRUCCION: IMPRIMIR                    {$$=$1;}
                 | DECLARAR               {$$=$1;}               
 ;
 
-DECLARAR: id igual EXPRESION PUNTO_Y_COMA
-
-IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new print.default($3,@1.first_line,@1.first_column);}
+DECLARAR: id igual EXPRESION puntycom {$$= new Declarar($1,$3,@1.first_line,@1.first_column);}
+;
+IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,@1.first_line,@1.first_column);}
 ;
 
 EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo("-1",tipoNat.NUMERO, @1.first_line, @1.first_column),tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)}
@@ -74,6 +77,7 @@ EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo(
         | EXPRESION por EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)} 
         | pariz EXPRESION parder              {$$ = $2;}
         | NATIVO                              {$$ = $1;}
+        | id                                  {$$= new Variable($1,@1.first_line, @1.first_column);}
 ;
 
 NATIVO :  numero        {$$=new Nativo($1,tipoNat.NUMERO, @1.first_line, @1.first_column)}

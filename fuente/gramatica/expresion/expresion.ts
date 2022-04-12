@@ -1,3 +1,4 @@
+import { ambito } from "../simbolo/ambito";
 import { tipo,tipos,Retorno } from "./retorno";
 
 export abstract class Expresion {
@@ -10,7 +11,7 @@ export abstract class Expresion {
         this.columna = columna
     }
 
-    public abstract ejecutar(): Retorno;
+    public abstract ejecutar(ambito:ambito): Retorno;
 
 
     public tipoDom(tipo1: tipo, tipo2: tipo): tipo {

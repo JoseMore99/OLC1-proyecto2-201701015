@@ -10,9 +10,9 @@ class Aritmetica extends expresion_1.Expresion {
         this.derecha = derecha;
         this.tipo = tipo;
     }
-    ejecutar() {
-        const ValorIz = this.izquierda.ejecutar();
-        const ValorDer = this.derecha.ejecutar();
+    ejecutar(ambito) {
+        const ValorIz = this.izquierda.ejecutar(ambito);
+        const ValorDer = this.derecha.ejecutar(ambito);
         const Dom = this.tipoDom(ValorIz.type, ValorDer.type);
         if (this.tipo == tipoArit.SUMA) {
             if (Dom == retorno_1.tipo.STRING) {
@@ -38,7 +38,7 @@ class Aritmetica extends expresion_1.Expresion {
                 return { valor: (ValorIz.valor * ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
-                console.log("Error");
+                console.log("Error Semantico");
             }
         }
         else if (this.tipo == tipoArit.DIVISION) {

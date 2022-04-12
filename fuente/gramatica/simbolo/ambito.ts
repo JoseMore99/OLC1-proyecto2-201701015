@@ -7,21 +7,20 @@ export class ambito {
         this.variables=new Map()
     }
 
-    public AgregarVal(id:string, value:any, type:tipo){
+    public AgregarVal(id:string, valor:any, tipo:tipo){
         let aux: ambito | null = this
-
         while(aux!=null){
             if(aux.variables.has(id)){
                 const val = aux.variables.get(id)
-                if(val?.tipo == type) {
-                    aux.variables.set(id, new simbolo(value, id, type))
+                if(val?.tipo == tipo) {
+                    aux.variables.set(id, new simbolo( id,valor, tipo))
                 }else{
                     console.log("Error Semantico")
                 }
             }
             aux = aux.padre
         }
-        this.variables.set(id, new simbolo(value, id, type))
+        this.variables.set(id, new simbolo(id,valor, tipo))
     }
     public RetornarVal(id:string):simbolo|undefined{
         let aux: ambito | null = this
