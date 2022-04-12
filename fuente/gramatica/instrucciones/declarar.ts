@@ -8,6 +8,7 @@ export class Declarar extends instruccion{
     }
     public ejecutar(ambito: ambito) {
         const aux = this.valor.ejecutar(ambito)
+        //verificar tipos 
         ambito.AgregarVal(this.id, aux.valor, aux.type)
     }
 }

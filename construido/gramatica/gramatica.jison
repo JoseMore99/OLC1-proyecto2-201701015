@@ -5,6 +5,7 @@ const {Variable} = require('./expresion/variable')
 const {Nativo,tipoNat} = require('./expresion/nativo')
  const {Declarar} = require('./instrucciones/declarar')
     const {Print} = require('./instrucciones/print')
+    const {Bloque} = require('./instrucciones/bloque')
 %}
 
 %lex
@@ -23,9 +24,16 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "*"                 return 'por';
 "("                 return 'pariz';
 ")"                 return 'parder';
+"{"                 return 'llaveiz';
+"}"                 return 'llaveder';
 ','                 return 'coma'
 ";"                 return 'puntycom';
 "print"             return 'print';
+"if"                return 'resif';
+"else"              return 'reselse';
+"while"             return 'reswhile';
+"return"            return 'resreturn';
+"break"             return 'resbreak';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -61,14 +69,23 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION     {if($2!=false)$1.push($2);$$=$1;}
             |INSTRUCCION                     {$$=($1!=false) ?[$1]:[];}
 ;
 
-INSTRUCCION: IMPRIMIR                    {$$=$1;}
-                | DECLARAR               {$$=$1;}               
+INSTRUCCION: IMPRIMIR            {$$=$1;}
+        | DECLARAR               {$$=$1;}
+        | INSTIF                 {$$=$1}               
 ;
+
+INSTIF: resifpariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=$1}
+
+INSTELSE: reselse llaveiz BLOQUEINST llaveder
+        | reselse INSTIF
+        |
 
 DECLARAR: id igual EXPRESION puntycom {$$= new Declarar($1,$3,@1.first_line,@1.first_column);}
 ;
 IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,@1.first_line,@1.first_column);}
 ;
+
+BLOQUEINST:INSTRUCCIONES        {$$=new Bloque($1,@1.first_line,@1.first_column)}
 
 EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo("-1",tipoNat.NUMERO, @1.first_line, @1.first_column),tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)}
         | EXPRESION mas EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.SUMA, @1.first_line, @1.first_column)} 

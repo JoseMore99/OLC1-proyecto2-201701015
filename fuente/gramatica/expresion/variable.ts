@@ -6,7 +6,6 @@ export class Variable extends Expresion{
     constructor(private id:string,line:number, column:number ){
         super(line, column)
     }
-    
     public ejecutar(ambito: ambito):Retorno {
             const aux = ambito.RetornarVal(this.id)
             if(aux != null) {
