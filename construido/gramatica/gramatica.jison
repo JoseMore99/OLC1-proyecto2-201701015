@@ -7,6 +7,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {Print} = require('./instrucciones/print')
     const {Bloque} = require('./instrucciones/bloque')
     const {If} = require('./instrucciones/If')
+    const {While} = require('./instrucciones/While')
 %}
 
 %lex
@@ -74,10 +75,14 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION     {if($2!=false)$1.push($2);$$=$1;}
 
 INSTRUCCION: IMPRIMIR            {$$=$1;}
         | DECLARAR               {$$=$1;}
-        | INSTIF                 {$$=$1}               
+        | INSTIF                 {$$=$1;}   
+        | INSTWHILE              {$$=$1;}          
 ;
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
+;
+
+INSTWHILE: reswhile pariz EXPRESION parder llaveiz BLOQUEINST llaveder  {$$=new While($3,$6,@1.first_line,@1.first_column);}
 ;
 
 INSTELSE: reselse llaveiz BLOQUEINST llaveder {$$=$3}

@@ -15,6 +15,8 @@ export class If extends instruccion{
             }
             else if (this.SiNo!=null) {
                 this.SiNo.ejecutar(ambito)
+            }else{
+                console.log("Error semantico")
             }
         }
     }
