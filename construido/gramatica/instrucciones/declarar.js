@@ -10,6 +10,7 @@ class Declarar extends instruccion_1.instruccion {
     }
     ejecutar(ambito) {
         const aux = this.valor.ejecutar(ambito);
+        //verificar tipos 
         ambito.AgregarVal(this.id, aux.valor, aux.type);
     }
 }

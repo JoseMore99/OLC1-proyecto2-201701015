@@ -1,6 +1,7 @@
 import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 import { ambito } from "../simbolo/ambito";
+
 export class Relacional extends Expresion {
 
     constructor(private izquierda: Expresion, private derecha: Expresion, private tipo: TipoRel, fila: number, columna: number) {
