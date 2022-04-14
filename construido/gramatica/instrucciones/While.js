@@ -1,28 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.If = void 0;
+exports.While = void 0;
 const retorno_1 = require("../expresion/retorno");
 const instruccion_1 = require("./instruccion");
-class If extends instruccion_1.instruccion {
-    constructor(condicion, contenido, SiNo, fila, columna) {
+class While extends instruccion_1.instruccion {
+    constructor(condicion, contenido, fila, columna) {
         super(fila, columna);
         this.condicion = condicion;
         this.contenido = contenido;
-        this.SiNo = SiNo;
     }
     ejecutar(ambito) {
-        const condi = this.condicion.ejecutar(ambito);
+        let condi = this.condicion.ejecutar(ambito);
         if (condi.type == retorno_1.tipo.BOOLEAN) {
-            if (condi.valor) {
+            while (condi.valor) {
                 this.contenido.ejecutar(ambito);
+                condi = this.condicion.ejecutar(ambito);
             }
-            else if (this.SiNo != null) {
-                this.SiNo.ejecutar(ambito);
-            }
-            else {
-                console.log("Error semantico");
-            }
+        }
+        else {
+            console.log("Error semantico");
         }
     }
 }
-exports.If = If;
+exports.While = While;
