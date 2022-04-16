@@ -17,13 +17,15 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 %%
 
 \s+                 //espacios en blanco
-/*"//".*			
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]*/	
+"//".*		//comentario simple	
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	//comentario multiple
 
 "+"                 return 'mas';
 "-"                 return 'menos';
 "/"                 return 'divid';
 "*"                 return 'por';
+"^"                 return 'pot';
+"%"                 return 'mod';
 "("                 return 'pariz';
 ")"                 return 'parder';
 "{"                 return 'llaveiz';
@@ -43,6 +45,9 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 ">"                 return 'mayor';
 "<="                return 'menorigual';
 "<"                 return 'menor';
+"||"                 return 'or';
+"&&"                return 'and';
+"!"                 return 'not';
 
 
 [0-9]+\b                return 'numero';
@@ -56,10 +61,14 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 .                   {console.log(yylloc.first_line, yylloc.first_columm, 'Lexico', yytext)}
 /lex
 
+%left 'or'
+%left 'and'
+%left 'not'
 %left 'noigual' 'igualigual'
 %left 'menorigual' 'mayorigual' 'mayor' 'menor'
 %left 'mas', 'menos'
-%left 'divid', 'por'
+%left 'divid', 'por','mod'
+%left 'pot'
 %left Umenos
 
 %start INI
@@ -104,19 +113,25 @@ EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo(
         | EXPRESION menos EXPRESION           {$$= new Aritmetica($1,$3,tipoArit.RESTA, @1.first_line, @1.first_column)}  
         | EXPRESION divid EXPRESION           {$$= new Aritmetica($1,$3,tipoArit.DIVISION, @1.first_line, @1.first_column)} 
         | EXPRESION por EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)} 
+        | EXPRESION pot EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.POTENCIA, @1.first_line, @1.first_column)} 
+        | EXPRESION mod EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.MODULO, @1.first_line, @1.first_column)} 
         | EXPRESION igualigual EXPRESION      {$$= new Relacional($1,$3,TipoRel.IGUALIGUAL, @1.first_line, @1.first_column)}
         | EXPRESION noigual EXPRESION         {$$= new Relacional($1,$3,TipoRel.DIFERENTE, @1.first_line, @1.first_column)}
         | EXPRESION mayorigual EXPRESION      {$$= new Relacional($1,$3,TipoRel.MAYOR_IGUAL, @1.first_line, @1.first_column)}
         | EXPRESION mayor EXPRESION           {$$= new Relacional($1,$3,TipoRel.MAYOR, @1.first_line, @1.first_column)}
         | EXPRESION menorigual EXPRESION      {$$= new Relacional($1,$3,TipoRel.MENOR_IGUAL, @1.first_line, @1.first_column)}
         | EXPRESION menor EXPRESION           {$$= new Relacional($1,$3,TipoRel.MENOR, @1.first_line, @1.first_column)}
+        | EXPRESION and EXPRESION             {$$= new Relacional($1,$3,TipoRel.AND, @1.first_line, @1.first_column)}
+        | EXPRESION or EXPRESION              {$$= new Relacional($1,$3,TipoRel.OR, @1.first_line, @1.first_column)}
+        | not EXPRESION                       {$$= new Relacional(null,$2,TipoRel.NOT, @1.first_line, @1.first_column)}
         | pariz EXPRESION parder              {$$ = $2;}
         | NATIVO                              {$$ = $1;}
         | id                                  {$$= new Variable($1,@1.first_line, @1.first_column);}
 ;
 
 NATIVO :  numero        {$$=new Nativo($1,tipoNat.NUMERO, @1.first_line, @1.first_column)}
-        | decimal       {$$=new Nativo($1,tipoNat.DOBLE, @1.first_line, @1.first_column)}
+        | decimal       {$$=new Nativo($1,tipoNat.DECIMAL, @1.first_line, @1.first_column)}
         | cadena        {$$=new Nativo($1,tipoNat.STRING, @1.first_line, @1.first_column)}
         | bool          {$$=new Nativo($1,tipoNat.BOOLEAN, @1.first_line, @1.first_column)}
+        | caracter      {$$=new Nativo($1,tipoNat.CHAR, @1.first_line, @1.first_column)}
 ;

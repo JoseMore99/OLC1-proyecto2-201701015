@@ -15,39 +15,114 @@ export class Aritmetica extends Expresion {
         if(this.tipo == tipoArit.SUMA){
             if (Dom == tipo.STRING) {
                 return { valor: (ValorIz.valor.toString() + ValorDer.valor.toString()), type: tipo.STRING };
-            }else if (Dom == tipo.NUMERO) {
+            }else if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
+                if(ValorIz.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor.charCodeAt(0) + ValorDer.valor), type: tipo.NUMERO };
+                 }
+                if(ValorDer.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor + ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                 }
+                if(ValorIz.type==tipo.BOOLEAN){
+                    if(ValorIz.type){
+                        return { valor: (1 + ValorDer.valor), type: tipo.NUMERO };
+                    }else{
+                        return { valor: (0 + ValorDer.valor), type: tipo.NUMERO };
+                    }
+                 }
+                if(ValorDer.type==tipo.BOOLEAN){
+                    if(ValorIz.type){
+                        return { valor: (ValorIz.valor + 1), type: tipo.NUMERO };
+                    }else{
+                        return { valor: (ValorIz.valor + 0), type: tipo.NUMERO };
+                    }    
+                }
                 return { valor: (ValorIz.valor + ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
                 console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.RESTA) {
-            if (Dom == tipo.NUMERO) {
+            if (Dom == tipo.NUMERO|| Dom == tipo.DECIMAL) {
+                if(ValorIz.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor.charCodeAt(0) - ValorDer.valor), type: tipo.NUMERO };
+                 }
+                if(ValorDer.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor - ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                 }
+                if(ValorIz.type==tipo.BOOLEAN){
+                    if(ValorIz.type){
+                        return { valor: (1 - ValorDer.valor), type: tipo.NUMERO };
+                    }else{
+                        return { valor: (0 - ValorDer.valor), type: tipo.NUMERO };
+                    }
+                 }
+                if(ValorDer.type==tipo.BOOLEAN){
+                    if(ValorIz.type){
+                        return { valor: (ValorIz.valor - 1), type: tipo.NUMERO };
+                    }else{
+                        return { valor: (ValorIz.valor - 0), type: tipo.NUMERO };
+                    }    
+                }
                 return { valor: (ValorIz.valor - ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
                 console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.MULTIPLICACION) {
-            if (Dom == tipo.NUMERO) {
+            if (Dom == tipo.NUMERO|| Dom == tipo.DECIMAL) {
+                if(ValorIz.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor.charCodeAt(0) * ValorDer.valor), type: tipo.NUMERO };
+                 }
+                if(ValorDer.type==tipo.CHAR){
+                    return { valor: (ValorIz.valor * ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                 }
                 return { valor: (ValorIz.valor * ValorDer.valor), type: tipo.NUMERO };
             } 
             else {
                 console.log("Error Semantico")
             }
         }else if (this.tipo == tipoArit.DIVISION) {
-            if (Dom == tipo.NUMERO) {
+            if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
                 if (ValorDer.valor == 0) {
                     console.log("Error Semantico")
                 } 
                 else {
+                    if(ValorIz.type==tipo.CHAR){
+                        return { valor: (ValorIz.valor.charCodeAt(0) / ValorDer.valor), type: tipo.NUMERO };
+                     }
+                    if(ValorDer.type==tipo.CHAR){
+                        return { valor: (ValorIz.valor / ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                     }
                     return { valor: (ValorIz.valor / ValorDer.valor), type: tipo.NUMERO };
                 }
             } 
             else {
                 console.log("Error Semantico")
             }
+        }else if (this.tipo == tipoArit.POTENCIA) {
+            if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
+                let pote:number=ValorIz.valor;
+                if (ValorDer.valor==0){
+                    return { valor: 1, type: tipo.NUMERO };
+                }
+                for (let i = 1; i < ValorDer.valor; i++) {
+                    pote*=pote;
+                }
+                return { valor: (pote), type: tipo.NUMERO };
+                
+            } 
+            else {
+                console.log("Error Semantico")
+            }
+        }else if (this.tipo == tipoArit.MODULO) {
+            if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
+                return { valor: (ValorIz.valor%ValorDer.valor), type: tipo.NUMERO };
+            } 
+            else {
+                console.log("Error Semantico")
+            }
         }
+
         return { valor: null, type: tipo.NULL } ;
     }
     
@@ -56,5 +131,7 @@ export enum tipoArit {
     SUMA,
     RESTA,
     MULTIPLICACION,
-    DIVISION
+    DIVISION,
+    POTENCIA,
+    MODULO
 }

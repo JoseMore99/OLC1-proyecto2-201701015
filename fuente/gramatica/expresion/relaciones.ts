@@ -30,6 +30,18 @@ export class Relacional extends Expresion {
             const result = ValorIz.valor <= ValorDer.valor
             return { valor: result, type: tipo.BOOLEAN }
         }
+         else if (this.tipo == TipoRel.AND) {
+            const result = ValorIz.valor && ValorDer.valor
+            return { valor: result, type: tipo.BOOLEAN }
+        }
+         else if (this.tipo == TipoRel.OR) {
+            const result = ValorIz.valor || ValorDer.valor
+            return { valor: result, type: tipo.BOOLEAN }
+        }
+         else if (this.tipo == TipoRel.NOT) {
+            const result = !ValorDer.valor 
+            return { valor: result, type: tipo.BOOLEAN }
+        }
         return { valor: null, type: tipo.NULL }
     }
 }

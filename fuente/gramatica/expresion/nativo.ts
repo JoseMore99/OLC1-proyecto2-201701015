@@ -12,9 +12,13 @@ export class Nativo extends Expresion {
         
         if(this.tipoN==tipoNat.NUMERO){
             return{valor:Number(this.valor),type:tipo.NUMERO}
+        } else if(this.tipoN==tipoNat.DECIMAL){
+            return{valor:Number(this.valor),type:tipo.DECIMAL}
         } else if (this.tipoN == tipoNat.STRING) {
             return { valor: this.valor.toString(), type: tipo.STRING };
-        } else if (this.tipoN ==tipoNat.BOOLEAN) {
+        } else if(this.tipoN==tipoNat.CHAR){
+            return { valor: this.valor.toString(), type: tipo.CHAR };
+        }else if (this.tipoN ==tipoNat.BOOLEAN) {
             if (this.valor.toString().toLowerCase() == "true") {
                 return { valor: true, type: tipo.BOOLEAN }
             }
@@ -25,8 +29,10 @@ export class Nativo extends Expresion {
     }
 
 export enum tipoNat {
-    NUMERO,
-    STRING,
+    NUMERO ,
+    STRING ,
     BOOLEAN,
-    DOBLE
+    DECIMAL,
+    CHAR,
+    NULL 
 }
