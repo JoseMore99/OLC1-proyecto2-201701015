@@ -18,7 +18,29 @@ class Aritmetica extends expresion_1.Expresion {
             if (Dom == retorno_1.tipo.STRING) {
                 return { valor: (ValorIz.valor.toString() + ValorDer.valor.toString()), type: retorno_1.tipo.STRING };
             }
-            else if (Dom == retorno_1.tipo.NUMERO) {
+            else if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
+                if (ValorIz.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor.charCodeAt(0) + ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                }
+                if (ValorDer.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor + ValorDer.valor.charCodeAt(0)), type: retorno_1.tipo.NUMERO };
+                }
+                if (ValorIz.type == retorno_1.tipo.BOOLEAN) {
+                    if (ValorIz.type) {
+                        return { valor: (1 + ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                    }
+                    else {
+                        return { valor: (0 + ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                    }
+                }
+                if (ValorDer.type == retorno_1.tipo.BOOLEAN) {
+                    if (ValorIz.type) {
+                        return { valor: (ValorIz.valor + 1), type: retorno_1.tipo.NUMERO };
+                    }
+                    else {
+                        return { valor: (ValorIz.valor + 0), type: retorno_1.tipo.NUMERO };
+                    }
+                }
                 return { valor: (ValorIz.valor + ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
@@ -26,7 +48,29 @@ class Aritmetica extends expresion_1.Expresion {
             }
         }
         else if (this.tipo == tipoArit.RESTA) {
-            if (Dom == retorno_1.tipo.NUMERO) {
+            if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
+                if (ValorIz.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor.charCodeAt(0) - ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                }
+                if (ValorDer.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor - ValorDer.valor.charCodeAt(0)), type: retorno_1.tipo.NUMERO };
+                }
+                if (ValorIz.type == retorno_1.tipo.BOOLEAN) {
+                    if (ValorIz.type) {
+                        return { valor: (1 - ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                    }
+                    else {
+                        return { valor: (0 - ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                    }
+                }
+                if (ValorDer.type == retorno_1.tipo.BOOLEAN) {
+                    if (ValorIz.type) {
+                        return { valor: (ValorIz.valor - 1), type: retorno_1.tipo.NUMERO };
+                    }
+                    else {
+                        return { valor: (ValorIz.valor - 0), type: retorno_1.tipo.NUMERO };
+                    }
+                }
                 return { valor: (ValorIz.valor - ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
@@ -34,7 +78,13 @@ class Aritmetica extends expresion_1.Expresion {
             }
         }
         else if (this.tipo == tipoArit.MULTIPLICACION) {
-            if (Dom == retorno_1.tipo.NUMERO) {
+            if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
+                if (ValorIz.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor.charCodeAt(0) * ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                }
+                if (ValorDer.type == retorno_1.tipo.CHAR) {
+                    return { valor: (ValorIz.valor * ValorDer.valor.charCodeAt(0)), type: retorno_1.tipo.NUMERO };
+                }
                 return { valor: (ValorIz.valor * ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
@@ -42,13 +92,42 @@ class Aritmetica extends expresion_1.Expresion {
             }
         }
         else if (this.tipo == tipoArit.DIVISION) {
-            if (Dom == retorno_1.tipo.NUMERO) {
+            if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
                 if (ValorDer.valor == 0) {
                     console.log("Error Semantico");
                 }
                 else {
+                    if (ValorIz.type == retorno_1.tipo.CHAR) {
+                        return { valor: (ValorIz.valor.charCodeAt(0) / ValorDer.valor), type: retorno_1.tipo.NUMERO };
+                    }
+                    if (ValorDer.type == retorno_1.tipo.CHAR) {
+                        return { valor: (ValorIz.valor / ValorDer.valor.charCodeAt(0)), type: retorno_1.tipo.NUMERO };
+                    }
                     return { valor: (ValorIz.valor / ValorDer.valor), type: retorno_1.tipo.NUMERO };
                 }
+            }
+            else {
+                console.log("Error Semantico");
+            }
+        }
+        else if (this.tipo == tipoArit.POTENCIA) {
+            if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
+                let pote = ValorIz.valor;
+                if (ValorDer.valor == 0) {
+                    return { valor: 1, type: retorno_1.tipo.NUMERO };
+                }
+                for (let i = 1; i < ValorDer.valor; i++) {
+                    pote *= pote;
+                }
+                return { valor: (pote), type: retorno_1.tipo.NUMERO };
+            }
+            else {
+                console.log("Error Semantico");
+            }
+        }
+        else if (this.tipo == tipoArit.MODULO) {
+            if (Dom == retorno_1.tipo.NUMERO || Dom == retorno_1.tipo.DECIMAL) {
+                return { valor: (ValorIz.valor % ValorDer.valor), type: retorno_1.tipo.NUMERO };
             }
             else {
                 console.log("Error Semantico");
@@ -64,4 +143,6 @@ var tipoArit;
     tipoArit[tipoArit["RESTA"] = 1] = "RESTA";
     tipoArit[tipoArit["MULTIPLICACION"] = 2] = "MULTIPLICACION";
     tipoArit[tipoArit["DIVISION"] = 3] = "DIVISION";
+    tipoArit[tipoArit["POTENCIA"] = 4] = "POTENCIA";
+    tipoArit[tipoArit["MODULO"] = 5] = "MODULO";
 })(tipoArit = exports.tipoArit || (exports.tipoArit = {}));

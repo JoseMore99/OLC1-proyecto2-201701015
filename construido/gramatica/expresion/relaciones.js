@@ -37,6 +37,18 @@ class Relacional extends expresion_1.Expresion {
             const result = ValorIz.valor <= ValorDer.valor;
             return { valor: result, type: retorno_1.tipo.BOOLEAN };
         }
+        else if (this.tipo == TipoRel.AND) {
+            const result = ValorIz.valor && ValorDer.valor;
+            return { valor: result, type: retorno_1.tipo.BOOLEAN };
+        }
+        else if (this.tipo == TipoRel.OR) {
+            const result = ValorIz.valor || ValorDer.valor;
+            return { valor: result, type: retorno_1.tipo.BOOLEAN };
+        }
+        else if (this.tipo == TipoRel.NOT) {
+            const result = !ValorDer.valor;
+            return { valor: result, type: retorno_1.tipo.BOOLEAN };
+        }
         return { valor: null, type: retorno_1.tipo.NULL };
     }
 }

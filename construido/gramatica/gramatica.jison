@@ -1,6 +1,8 @@
 %{
  const {Aritmetica,tipoArit} = require('./expresion/Aritmetica')
 const {Relacional,TipoRel} = require('./expresion/relaciones')
+const {tipo} = require('./expresion/retorno')
+const {Incdec,tipoA} = require('./instrucciones/incdec')
 const {Variable} = require('./expresion/variable')
 const {Nativo,tipoNat} = require('./expresion/nativo')
  const {Declarar} = require('./instrucciones/declarar')
@@ -30,14 +32,21 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 ")"                 return 'parder';
 "{"                 return 'llaveiz';
 "}"                 return 'llaveder';
-','                 return 'coma'
+','                 return 'coma';
 ";"                 return 'puntycom';
+"++"                return 'masmas';
+"--"                return 'menosmenos';
 "print"             return 'print';
 "if"                return 'resif';
 "else"              return 'reselse';
 "while"             return 'reswhile';
 "return"            return 'resreturn';
 "break"             return 'resbreak';
+"int"               return 'resint';
+"double"            return 'resdouble';
+"string"            return 'resstring';
+"boolean"           return 'resbool';
+"char"              return 'reschar';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -66,7 +75,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 %left 'not'
 %left 'noigual' 'igualigual'
 %left 'menorigual' 'mayorigual' 'mayor' 'menor'
-%left 'mas', 'menos'
+%left 'mas', 'menos','masmas','menosmenos'
 %left 'divid', 'por','mod'
 %left 'pot'
 %left Umenos
@@ -85,7 +94,8 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION     {if($2!=false)$1.push($2);$$=$1;}
 INSTRUCCION: IMPRIMIR            {$$=$1;}
         | DECLARAR               {$$=$1;}
         | INSTIF                 {$$=$1;}   
-        | INSTWHILE              {$$=$1;}          
+        | INSTWHILE              {$$=$1;}
+        | INCDEC puntycom        {$$=$1;}
 ;
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
@@ -98,8 +108,16 @@ INSTELSE: reselse llaveiz BLOQUEINST llaveder {$$=$3}
         | reselse INSTIF {$$=$2}
         | {$$= null}
 ;
+//primero declara y segundo asigna
+DECLARAR: TIPODATO id igual EXPRESION puntycom {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
+        | id igual EXPRESION puntycom {$$= new Declarar(tipo.NULL,$1,$3,@1.first_line,@1.first_column);}
+;
 
-DECLARAR: id igual EXPRESION puntycom {$$= new Declarar($1,$3,@1.first_line,@1.first_column);}
+TIPODATO: resint        {$$=tipo.NUMERO;}
+        | resdouble     {$$=tipo.DECIMAL;}
+        | resstring     {$$=tipo.STRING;}
+        | resbool       {$$=tipo.BOOLEAN;}
+        | reschar       {$$=tipo.CHAR;}
 ;
 
 IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,@1.first_line,@1.first_column);}
@@ -107,7 +125,10 @@ IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,@1.first_line
 
 BLOQUEINST:INSTRUCCIONES        {$$=new Bloque($1,@1.first_line,@1.first_column)}
 ;
-
+//incremento o decremento
+INCDEC:   EXPRESION mas mas           {$$= new Incdec($1,tipoA.INCREMENTO,@1.first_line,@1.first_column)}
+        | EXPRESION menos menos       {$$= new Incdec($1,tipoA.DECREMENTO,@1.first_line,@1.first_column)}
+;
 EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo("-1",tipoNat.NUMERO, @1.first_line, @1.first_column),tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)}
         | EXPRESION mas EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.SUMA, @1.first_line, @1.first_column)} 
         | EXPRESION menos EXPRESION           {$$= new Aritmetica($1,$3,tipoArit.RESTA, @1.first_line, @1.first_column)}  
@@ -115,6 +136,7 @@ EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo(
         | EXPRESION por EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)} 
         | EXPRESION pot EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.POTENCIA, @1.first_line, @1.first_column)} 
         | EXPRESION mod EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.MODULO, @1.first_line, @1.first_column)} 
+        | INCDEC                              {$$=$1;}
         | EXPRESION igualigual EXPRESION      {$$= new Relacional($1,$3,TipoRel.IGUALIGUAL, @1.first_line, @1.first_column)}
         | EXPRESION noigual EXPRESION         {$$= new Relacional($1,$3,TipoRel.DIFERENTE, @1.first_line, @1.first_column)}
         | EXPRESION mayorigual EXPRESION      {$$= new Relacional($1,$3,TipoRel.MAYOR_IGUAL, @1.first_line, @1.first_column)}

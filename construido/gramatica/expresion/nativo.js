@@ -13,8 +13,14 @@ class Nativo extends expresion_1.Expresion {
         if (this.tipoN == tipoNat.NUMERO) {
             return { valor: Number(this.valor), type: retorno_1.tipo.NUMERO };
         }
+        else if (this.tipoN == tipoNat.DECIMAL) {
+            return { valor: Number(this.valor), type: retorno_1.tipo.DECIMAL };
+        }
         else if (this.tipoN == tipoNat.STRING) {
             return { valor: this.valor.toString(), type: retorno_1.tipo.STRING };
+        }
+        else if (this.tipoN == tipoNat.CHAR) {
+            return { valor: this.valor.toString(), type: retorno_1.tipo.CHAR };
         }
         else if (this.tipoN == tipoNat.BOOLEAN) {
             if (this.valor.toString().toLowerCase() == "true") {
@@ -32,5 +38,7 @@ var tipoNat;
     tipoNat[tipoNat["NUMERO"] = 0] = "NUMERO";
     tipoNat[tipoNat["STRING"] = 1] = "STRING";
     tipoNat[tipoNat["BOOLEAN"] = 2] = "BOOLEAN";
-    tipoNat[tipoNat["DOBLE"] = 3] = "DOBLE";
+    tipoNat[tipoNat["DECIMAL"] = 3] = "DECIMAL";
+    tipoNat[tipoNat["CHAR"] = 4] = "CHAR";
+    tipoNat[tipoNat["NULL"] = 5] = "NULL";
 })(tipoNat = exports.tipoNat || (exports.tipoNat = {}));
