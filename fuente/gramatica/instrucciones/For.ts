@@ -19,7 +19,7 @@ export class For extends instruccion{
                 condi=this.condicion.ejecutar(ambito);
             }
         }else{
-            console.log("Error semantico")
+            console.log("Error semantico en for")
         }
 
     }

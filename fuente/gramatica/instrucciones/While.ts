@@ -15,7 +15,7 @@ export class While extends instruccion{
                 condi=this.condicion.ejecutar(ambito);
             }
         }else{
-            console.log("Error semantico")
+            console.log("Error semantico en while")
         }
 
     }

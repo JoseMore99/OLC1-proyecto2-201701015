@@ -16,7 +16,7 @@ class ambito {
                     aux.variables.set(id, new simbolo_1.simbolo(id, valor, tipo));
                 }
                 else {
-                    console.log("Error Semantico");
+                    console.log("Error Semantico en ambito");
                 }
             }
             aux = aux.padre;

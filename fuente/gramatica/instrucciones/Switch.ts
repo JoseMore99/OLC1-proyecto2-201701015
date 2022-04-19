@@ -7,7 +7,7 @@ import { instruccion } from "./instruccion";
 
 export class Switch extends instruccion{
 
-    constructor(private condicion:Expresion,private listaCase: Case[]|undefined, private defecto: Case |undefined       , fila: number, columna: number){
+    constructor(private condicion:Expresion,private listaCase: Case[]|undefined, private defecto: Case , fila: number, columna: number){
         super(fila,columna)
     }
     public ejecutar(ambito: ambito) {
@@ -21,7 +21,7 @@ export class Switch extends instruccion{
                 }
             }
         }
-        if (this.defecto!=  undefined){
+        if (this.defecto!= null){
             this.defecto.ejecutar(ambito)
         }
        

@@ -15,7 +15,7 @@ export class ambito {
                 if(val?.tipo == tipo) {
                     aux.variables.set(id, new simbolo( id,valor, tipo))
                 }else{
-                    console.log("Error Semantico")
+                    console.log("Error Semantico en ambito")
                 }
             }
             aux = aux.padre

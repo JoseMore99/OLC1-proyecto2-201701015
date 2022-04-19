@@ -17,7 +17,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 
 %lex
 
-%options case-sensitive
+%options case-insensitive
 
 %%
 
@@ -100,12 +100,15 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION     {if($2!=false)$1.push($2);$$=$1;}
 ;
 
 INSTRUCCION: IMPRIMIR            {$$=$1;}
-        | DECLARAR               {$$=$1;}
+        | DECLARAR  puntycom     {$$=$1;}
         | INSTIF                 {$$=$1;}   
         | INSTWHILE              {$$=$1;}
         | INCDEC puntycom        {$$=$1;}
         | INSTSWITCH             {$$=$1;}
+        | INSTFOR                {$$=$1;}
 ;
+
+
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
 ;
@@ -113,7 +116,8 @@ INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=n
 INSTWHILE: reswhile pariz EXPRESION parder llaveiz BLOQUEINST llaveder  {$$=new While($3,$6,@1.first_line,@1.first_column);}
 ;
 
-INSTFOR: resfor pariz DECLARAR puntycom EXPRESION puntycom INSTRUCCION parder llaveiz BLOQUEINST llaveder {$$=new For($3,$5,$7,$10,@1.first_line,@1.first_column);}
+INSTFOR: resfor pariz DECLARAR puntycom EXPRESION puntycom DECLARAR parder llaveiz BLOQUEINST llaveder {$$=new For($3,$5,$7,$10,@1.first_line,@1.first_column);}
+       | resfor pariz DECLARAR puntycom EXPRESION puntycom INCDEC parder llaveiz BLOQUEINST llaveder {$$=new For($3,$5,$7,$10,@1.first_line,@1.first_column);}
 ;
 
 INSTELSE: reselse llaveiz BLOQUEINST llaveder {$$=$3}
@@ -133,11 +137,11 @@ LISTACASE: LISTACASE INSTCASE   {if($2!=false)$1.push($2);$$=$1;}
 INSTCASE: rescase EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line,@1.first_column);}
 ;
 
-DEFAULT: resdefaul EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line,@1.first_column);}
+DEFAULT: resdefaul dospunt BLOQUEINST {$$= new Case(null,$3,@1.first_line,@1.first_column);}
 ;
 //primero declara y segundo asigna
-DECLARAR: TIPODATO id igual EXPRESION puntycom {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
-        | id igual EXPRESION puntycom {$$= new Declarar(tipo.NULL,$1,$3,@1.first_line,@1.first_column);}
+DECLARAR: TIPODATO id igual EXPRESION {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
+        | id igual EXPRESION          {$$= new Declarar(tipo.NULL,$1,$3,@1.first_line,@1.first_column);}
 ;
 
 TIPODATO: resint        {$$=tipo.NUMERO;}
@@ -156,6 +160,8 @@ BLOQUEINST:INSTRUCCIONES        {$$=new Bloque($1,@1.first_line,@1.first_column)
 INCDEC:   EXPRESION mas mas           {$$= new Incdec($1,tipoA.INCREMENTO,@1.first_line,@1.first_column)}
         | EXPRESION menos menos       {$$= new Incdec($1,tipoA.DECREMENTO,@1.first_line,@1.first_column)}
 ;
+
+
 EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo("-1",tipoNat.NUMERO, @1.first_line, @1.first_column),tipoArit.MULTIPLICACION, @1.first_line, @1.first_column)}
         | EXPRESION mas EXPRESION             {$$= new Aritmetica($1,$3,tipoArit.SUMA, @1.first_line, @1.first_column)} 
         | EXPRESION menos EXPRESION           {$$= new Aritmetica($1,$3,tipoArit.RESTA, @1.first_line, @1.first_column)}  

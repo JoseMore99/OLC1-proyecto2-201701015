@@ -19,9 +19,9 @@ class If extends instruccion_1.instruccion {
             else if (this.SiNo != null) {
                 this.SiNo.ejecutar(ambito);
             }
-            else {
-                console.log("Error semantico");
-            }
+        }
+        else {
+            console.log("Error semantico en if");
         }
     }
 }

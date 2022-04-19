@@ -16,7 +16,7 @@ export class Declarar extends instruccion{
             ambito.AgregarVal(this.id.toLowerCase(), aux.valor, aux.type)
         }
         else{
-            console.log("ERROR SEMANTICO")
+            console.log("ERROR SEMANTICO en declarar")
         }
         
     }
