@@ -10,6 +10,9 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {Bloque} = require('./instrucciones/bloque')
     const {If} = require('./instrucciones/If')
     const {While} = require('./instrucciones/While')
+    const {Case} = require('./instrucciones/Case')
+    const {Switch} = require('./instrucciones/Switch')
+    const {For} = require('./instrucciones/For')
 %}
 
 %lex
@@ -34,12 +37,14 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "}"                 return 'llaveder';
 ','                 return 'coma';
 ";"                 return 'puntycom';
+":"                 return 'dospunt';
 "++"                return 'masmas';
 "--"                return 'menosmenos';
 "print"             return 'print';
 "if"                return 'resif';
 "else"              return 'reselse';
 "while"             return 'reswhile';
+"for"               return 'resfor';
 "return"            return 'resreturn';
 "break"             return 'resbreak';
 "int"               return 'resint';
@@ -47,6 +52,9 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "string"            return 'resstring';
 "boolean"           return 'resbool';
 "char"              return 'reschar';
+"switch"            return 'reswitch';
+"case"              return 'rescase';
+"default"           return 'resdefaul';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -96,6 +104,7 @@ INSTRUCCION: IMPRIMIR            {$$=$1;}
         | INSTIF                 {$$=$1;}   
         | INSTWHILE              {$$=$1;}
         | INCDEC puntycom        {$$=$1;}
+        | INSTSWITCH             {$$=$1;}
 ;
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
@@ -104,9 +113,27 @@ INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=n
 INSTWHILE: reswhile pariz EXPRESION parder llaveiz BLOQUEINST llaveder  {$$=new While($3,$6,@1.first_line,@1.first_column);}
 ;
 
+INSTFOR: resfor pariz DECLARAR puntycom EXPRESION puntycom INSTRUCCION parder llaveiz BLOQUEINST llaveder {$$=new For($3,$5,$7,$10,@1.first_line,@1.first_column);}
+;
+
 INSTELSE: reselse llaveiz BLOQUEINST llaveder {$$=$3}
         | reselse INSTIF {$$=$2}
         | {$$= null}
+;
+
+INSTSWITCH: reswitch pariz EXPRESION parder llaveiz LISTACASE DEFAULT llaveder {$$= new Switch($3,$6,$7,@1.first_line,@1.first_column);}
+          | reswitch pariz EXPRESION parder llaveiz LISTACASE llaveder {$$= new Switch($3,$6,undefined,@1.first_line,@1.first_column);}
+          | reswitch pariz EXPRESION parder llaveiz DEFAULT llaveder {$$= new Switch($3,undefined,$7,@1.first_line,@1.first_column);}
+;
+
+LISTACASE: LISTACASE INSTCASE   {if($2!=false)$1.push($2);$$=$1;}
+        |  INSTCASE             {$$=($1!=false) ?[$1]:[];}
+        ;
+
+INSTCASE: rescase EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line,@1.first_column);}
+;
+
+DEFAULT: resdefaul EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line,@1.first_column);}
 ;
 //primero declara y segundo asigna
 DECLARAR: TIPODATO id igual EXPRESION puntycom {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
