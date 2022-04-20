@@ -10,9 +10,11 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {Bloque} = require('./instrucciones/bloque')
     const {If} = require('./instrucciones/If')
     const {While} = require('./instrucciones/While')
+    const {Dowhile} = require('./instrucciones/Dowhile')
     const {Case} = require('./instrucciones/Case')
     const {Switch} = require('./instrucciones/Switch')
     const {For} = require('./instrucciones/For')
+    const {Funcion} = require('./instrucciones/funcion')
 %}
 
 %lex
@@ -44,6 +46,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "if"                return 'resif';
 "else"              return 'reselse';
 "while"             return 'reswhile';
+"do"                return 'resdo';
 "for"               return 'resfor';
 "return"            return 'resreturn';
 "break"             return 'resbreak';
@@ -106,6 +109,8 @@ INSTRUCCION: IMPRIMIR            {$$=$1;}
         | INCDEC puntycom        {$$=$1;}
         | INSTSWITCH             {$$=$1;}
         | INSTFOR                {$$=$1;}
+        | INSTDOWHILE            {$$=$1;}
+        | INSTFUNC               {$$=$1;}
 ;
 
 
@@ -114,6 +119,9 @@ INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=n
 ;
 
 INSTWHILE: reswhile pariz EXPRESION parder llaveiz BLOQUEINST llaveder  {$$=new While($3,$6,@1.first_line,@1.first_column);}
+;
+
+INSTDOWHILE: resdo llaveiz BLOQUEINST llaveder reswhile pariz EXPRESION parder puntycom {$$=new Dowhile($7,$3,@1.first_line,@1.first_column);}
 ;
 
 INSTFOR: resfor pariz DECLARAR puntycom EXPRESION puntycom DECLARAR parder llaveiz BLOQUEINST llaveder {$$=new For($3,$5,$7,$10,@1.first_line,@1.first_column);}
@@ -139,6 +147,15 @@ INSTCASE: rescase EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line
 
 DEFAULT: resdefaul dospunt BLOQUEINST {$$= new Case(null,$3,@1.first_line,@1.first_column);}
 ;
+
+INSTFUNC: id pariz PARAMETROS parder llaveiz BLOQUEINST llaveder        {$$= new funcion($1,$6,$3,@1.first_line,@1.first_column);}
+        | id pariz parder llaveiz BLOQUEINST llaveder                   {$$= new funcion($1,$5,[],@1.first_line,@1.first_column);}
+;
+
+PARAMETROS: PARAMETROS coma id       { $1.push($3); $$ =$1 }
+        |id                          {$$ = [$1]}
+;
+
 //primero declara y segundo asigna
 DECLARAR: TIPODATO id igual EXPRESION {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
         | id igual EXPRESION          {$$= new Declarar(tipo.NULL,$1,$3,@1.first_line,@1.first_column);}
