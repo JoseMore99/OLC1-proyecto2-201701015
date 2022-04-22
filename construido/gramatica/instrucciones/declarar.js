@@ -11,16 +11,35 @@ class Declarar extends instruccion_1.instruccion {
         this.valor = valor;
     }
     ejecutar(ambito) {
-        const aux = this.valor.ejecutar(ambito);
-        //verificar tipos 
-        if (this.tipo == retorno_1.tipo.NULL) {
-            ambito.AgregarVal(this.id.toLowerCase(), aux.valor, aux.type);
-        }
-        else if (this.tipo == aux.type) {
-            ambito.AgregarVal(this.id.toLowerCase(), aux.valor, aux.type);
+        if (this.valor != null) {
+            const aux = this.valor.ejecutar(ambito);
+            //verificar tipos 
+            if (this.tipo == retorno_1.tipo.NULL) {
+                ambito.AgregarVal(this.id.toLowerCase(), aux.valor, aux.type);
+            }
+            else if (this.tipo == aux.type) {
+                ambito.AgregarVal(this.id.toLowerCase(), aux.valor, aux.type);
+            }
+            else {
+                console.log("ERROR SEMANTICO en declarar");
+            }
         }
         else {
-            console.log("ERROR SEMANTICO en declarar");
+            if (this.tipo == retorno_1.tipo.NUMERO) {
+                ambito.AgregarVal(this.id.toLowerCase(), 0, retorno_1.tipo.NUMERO);
+            }
+            else if (this.tipo == retorno_1.tipo.STRING) {
+                ambito.AgregarVal(this.id.toLowerCase(), "", retorno_1.tipo.NUMERO);
+            }
+            else if (this.tipo == retorno_1.tipo.DECIMAL) {
+                ambito.AgregarVal(this.id.toLowerCase(), 0, retorno_1.tipo.NUMERO);
+            }
+            else if (this.tipo == retorno_1.tipo.CHAR) {
+                ambito.AgregarVal(this.id.toLowerCase(), '', retorno_1.tipo.NUMERO);
+            }
+            else if (this.tipo == retorno_1.tipo.BOOLEAN) {
+                ambito.AgregarVal(this.id.toLowerCase(), false, retorno_1.tipo.NUMERO);
+            }
         }
     }
 }

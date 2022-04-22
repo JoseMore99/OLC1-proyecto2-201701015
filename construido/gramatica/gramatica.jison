@@ -15,6 +15,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {Switch} = require('./instrucciones/Switch')
     const {For} = require('./instrucciones/For')
     const {Funcion} = require('./instrucciones/funcion')
+    const {Llamarfunc} = require('./instrucciones/llamarfunc')
 %}
 
 %lex
@@ -111,6 +112,7 @@ INSTRUCCION: IMPRIMIR            {$$=$1;}
         | INSTFOR                {$$=$1;}
         | INSTDOWHILE            {$$=$1;}
         | INSTFUNC               {$$=$1;}
+        | LLAMARFUNC             {$$=$1;}
 ;
 
 
@@ -148,16 +150,23 @@ INSTCASE: rescase EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line
 DEFAULT: resdefaul dospunt BLOQUEINST {$$= new Case(null,$3,@1.first_line,@1.first_column);}
 ;
 
-INSTFUNC: id pariz PARAMETROS parder llaveiz BLOQUEINST llaveder        {$$= new funcion($1,$6,$3,@1.first_line,@1.first_column);}
-        | id pariz parder llaveiz BLOQUEINST llaveder                   {$$= new funcion($1,$5,[],@1.first_line,@1.first_column);}
+INSTFUNC: id pariz PARAMETROS parder dospunt TIPODATO llaveiz BLOQUEINST llaveder      {$$= new funcion($1,$8,$3,$6,@1.first_line,@1.first_column);}
+        | id pariz parder dospunt TIPODATO llaveiz BLOQUEINST llaveder                 {$$= new funcion($1,$7,[],$5,@1.first_line,@1.first_column);}
 ;
 
-PARAMETROS: PARAMETROS coma id       { $1.push($3); $$ =$1 }
-        |id                          {$$ = [$1]}
+PARAMETROS: PARAMETROS coma TIPODATO id       { $1.push(new Declarar($3,$4,null,@1.first_line,@1.first_column)); $$ =$1 }
+        |TIPODATO id                          {$$ = [new Declarar($1,$2,null,@1.first_line,@1.first_column)]}
 ;
 
-//primero declara y segundo asigna
+LLAMARFUNC: id pariz LISTAP parder puntycom {$$=new Llamarfunc($1,$3,@1.first_line,@1.first_column);}
+        | id pariz  parder puntycom {$$=new Llamarfunc($1,[],@1.first_line,@1.first_column);}
+;
+LISTAP : LISTAP coma EXPRESION{ $1.push($3);$$ = $1;}
+        | EXPRESION{$$ = [$1];}
+;
+//primero declara y tercero asigna
 DECLARAR: TIPODATO id igual EXPRESION {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
+        | TIPODATO id                 {$$=new Declarar($1,$2,null,@1.first_line,@1.first_column);}
         | id igual EXPRESION          {$$= new Declarar(tipo.NULL,$1,$3,@1.first_line,@1.first_column);}
 ;
 

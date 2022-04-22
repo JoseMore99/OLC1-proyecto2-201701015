@@ -6,6 +6,7 @@ class ambito {
     constructor(padre) {
         this.padre = padre;
         this.variables = new Map();
+        this.funciones = new Map();
     }
     AgregarVal(id, valor, tipo) {
         let aux = this;
@@ -33,6 +34,34 @@ class ambito {
             aux = aux.padre;
         }
         return undefined;
+    }
+    AgregarFuncion(id, funcion) {
+        let aux = this;
+        while (aux != null) {
+            if (aux.funciones.has(id)) {
+                console.log("ERROR SEMANTICO en ambito y funciones");
+            }
+            aux = aux.padre;
+        }
+        this.funciones.set(id, funcion);
+    }
+    RetornarFunc(id) {
+        let aux = this;
+        while (aux != null) {
+            if (aux.variables.has(id)) {
+                const retorno = aux.funciones.get(id);
+                return retorno;
+            }
+            aux = aux.padre;
+        }
+        return undefined;
+    }
+    global() {
+        let aux = this;
+        while ((aux === null || aux === void 0 ? void 0 : aux.padre) != null) {
+            aux = aux.padre;
+        }
+        return aux;
     }
 }
 exports.ambito = ambito;
