@@ -9,7 +9,7 @@ class Case extends instruccion_1.instruccion {
         this.contenido = contenido;
     }
     ejecutar(ambito) {
-        this.contenido.ejecutar(ambito);
+        return this.contenido.ejecutar(ambito);
     }
 }
 exports.Case = Case;

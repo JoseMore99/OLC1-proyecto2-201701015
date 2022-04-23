@@ -14,10 +14,10 @@ class If extends instruccion_1.instruccion {
         const condi = this.condicion.ejecutar(ambito);
         if (condi.type == retorno_1.tipo.BOOLEAN) {
             if (condi.valor) {
-                this.contenido.ejecutar(ambito);
+                return this.contenido.ejecutar(ambito);
             }
             else if (this.SiNo != null) {
-                this.SiNo.ejecutar(ambito);
+                return this.SiNo.ejecutar(ambito);
             }
         }
         else {

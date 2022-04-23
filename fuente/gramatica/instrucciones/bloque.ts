@@ -9,7 +9,13 @@ export class Bloque extends instruccion{
         const Nuevoamb= new ambito(padre);
         for (const iterar of this.instrucciones) {
             try {
-                iterar.ejecutar(Nuevoamb);
+                const valor= iterar.ejecutar(Nuevoamb);
+                if (valor !=null&&valor!=undefined) {
+                    if(valor.valor==undefined){
+                        return valor
+                    }
+                    
+                }
             } catch (error) {
                 console.log(error)
             }

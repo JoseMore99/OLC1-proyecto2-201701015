@@ -12,7 +12,12 @@ class Bloque extends instruccion_1.instruccion {
         const Nuevoamb = new ambito_1.ambito(padre);
         for (const iterar of this.instrucciones) {
             try {
-                iterar.ejecutar(Nuevoamb);
+                const valor = iterar.ejecutar(Nuevoamb);
+                if (valor != null && valor != undefined) {
+                    if (valor.valor == undefined) {
+                        return valor;
+                    }
+                }
             }
             catch (error) {
                 console.log(error);

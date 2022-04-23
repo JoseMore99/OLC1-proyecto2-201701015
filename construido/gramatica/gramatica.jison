@@ -16,6 +16,8 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {For} = require('./instrucciones/For')
     const {Funcion} = require('./instrucciones/funcion')
     const {Llamarfunc} = require('./instrucciones/llamarfunc')
+    const {Break} = require('./instrucciones/Break')
+    const {Continue} = require('./instrucciones/Continue')
 %}
 
 %lex
@@ -49,8 +51,6 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "while"             return 'reswhile';
 "do"                return 'resdo';
 "for"               return 'resfor';
-"return"            return 'resreturn';
-"break"             return 'resbreak';
 "int"               return 'resint';
 "double"            return 'resdouble';
 "string"            return 'resstring';
@@ -59,6 +59,10 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "switch"            return 'reswitch';
 "case"              return 'rescase';
 "default"           return 'resdefaul';
+"break"             return 'resbreak';
+"return"            return 'resreturn';
+"continue"          return 'rescontinue';
+"void"             return 'resvoid';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -112,10 +116,15 @@ INSTRUCCION: IMPRIMIR            {$$=$1;}
         | INSTFOR                {$$=$1;}
         | INSTDOWHILE            {$$=$1;}
         | INSTFUNC               {$$=$1;}
-        | LLAMARFUNC             {$$=$1;}
+        | INSTBREAK              {$$=$1;}
+        | INSTCONTINUE           {$$=$1;}
+        | LLAMARFUNC  puntycom   {$$=$1;}
 ;
 
-
+INSTBREAK: resbreak puntycom {$$=new Break(@1.first_line,@1.first_column);}
+;
+INSTCONTINUE: rescontinue puntycom {$$=new Continue(@1.first_line,@1.first_column);}
+;
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
 ;
@@ -149,21 +158,25 @@ INSTCASE: rescase EXPRESION dospunt BLOQUEINST {$$= new Case($2,$4,@1.first_line
 
 DEFAULT: resdefaul dospunt BLOQUEINST {$$= new Case(null,$3,@1.first_line,@1.first_column);}
 ;
+LLAMARFUNC: id pariz LISTAP parder  {$$=new Llamarfunc($1,$3,@1.first_line,@1.first_column);}
+          | id pariz  parder  {$$=new Llamarfunc($1,[],@1.first_line,@1.first_column);}
+;
 
-INSTFUNC: id pariz PARAMETROS parder dospunt TIPODATO llaveiz BLOQUEINST llaveder      {$$= new funcion($1,$8,$3,$6,@1.first_line,@1.first_column);}
-        | id pariz parder dospunt TIPODATO llaveiz BLOQUEINST llaveder                 {$$= new funcion($1,$7,[],$5,@1.first_line,@1.first_column);}
+LISTAP : LISTAP coma EXPRESION{ $1.push($3);$$ = $1;}
+        | EXPRESION{$$ = [$1];}
+;
+
+//funciones y metodos
+INSTFUNC: id pariz PARAMETROS parder dospunt resvoid llaveiz BLOQUEINST llaveder      {$$= new Funcion($1,$8,$3,null,@1.first_line,@1.first_column);}
+        | id pariz parder dospunt resvoid llaveiz BLOQUEINST llaveder                 {$$= new Funcion($1,$7,[],null,@1.first_line,@1.first_column);}
+        | id pariz PARAMETROS parder dospunt TIPODATO llaveiz BLOQUEINST llaveder      {$$= new Funcion($1,$8,$3,$6,@1.first_line,@1.first_column);}
+        | id pariz parder dospunt TIPODATO llaveiz BLOQUEINST llaveder                 {$$= new Funcion($1,$7,[],$5,@1.first_line,@1.first_column);}
 ;
 
 PARAMETROS: PARAMETROS coma TIPODATO id       { $1.push(new Declarar($3,$4,null,@1.first_line,@1.first_column)); $$ =$1 }
         |TIPODATO id                          {$$ = [new Declarar($1,$2,null,@1.first_line,@1.first_column)]}
 ;
 
-LLAMARFUNC: id pariz LISTAP parder puntycom {$$=new Llamarfunc($1,$3,@1.first_line,@1.first_column);}
-        | id pariz  parder puntycom {$$=new Llamarfunc($1,[],@1.first_line,@1.first_column);}
-;
-LISTAP : LISTAP coma EXPRESION{ $1.push($3);$$ = $1;}
-        | EXPRESION{$$ = [$1];}
-;
 //primero declara y tercero asigna
 DECLARAR: TIPODATO id igual EXPRESION {$$= new Declarar($1,$2,$4,@1.first_line,@1.first_column);}
         | TIPODATO id                 {$$=new Declarar($1,$2,null,@1.first_line,@1.first_column);}
@@ -205,6 +218,7 @@ EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo(
         | EXPRESION and EXPRESION             {$$= new Relacional($1,$3,TipoRel.AND, @1.first_line, @1.first_column)}
         | EXPRESION or EXPRESION              {$$= new Relacional($1,$3,TipoRel.OR, @1.first_line, @1.first_column)}
         | not EXPRESION                       {$$= new Relacional(null,$2,TipoRel.NOT, @1.first_line, @1.first_column)}
+        | LLAMARFUNC                          {$$= $1;}
         | pariz EXPRESION parder              {$$ = $2;}
         | NATIVO                              {$$ = $1;}
         | id                                  {$$= new Variable($1,@1.first_line, @1.first_column);}

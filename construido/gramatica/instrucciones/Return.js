@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Print = void 0;
+exports.Return = void 0;
 const instruccion_1 = require("./instruccion");
-class Print extends instruccion_1.instruccion {
+class Return extends instruccion_1.instruccion {
     constructor(valor, fila, columna) {
         super(fila, columna);
         this.valor = valor;
     }
     ejecutar(ambito) {
-        const aux = this.valor.ejecutar(ambito);
-        console.log(aux.valor);
+        return { tipo: "201701015R", valor: this.valor, fila: this.fila, columna: this.columna };
     }
 }
-exports.Print = Print;
+exports.Return = Return;

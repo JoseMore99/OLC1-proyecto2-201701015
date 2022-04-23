@@ -11,7 +11,16 @@ export class While extends instruccion{
         let condi = this.condicion.ejecutar(ambito);
         if(condi.type==tipo.BOOLEAN){
             while(condi.valor){
-                this.contenido.ejecutar(ambito)
+                const salida = this.contenido.ejecutar(ambito)
+                
+                if (salida !=null&&salida!=undefined){
+                    if(salida.tipo == "201701015B"){
+                        break;
+                    }
+                    else if(salida.tipo == "201701015C"){
+                        continue;
+                    }
+                }
                 condi=this.condicion.ejecutar(ambito);
             }
         }else{

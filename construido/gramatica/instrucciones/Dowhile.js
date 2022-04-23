@@ -13,7 +13,15 @@ class Dowhile extends instruccion_1.instruccion {
         let condi = this.condicion.ejecutar(ambito);
         if (condi.type == retorno_1.tipo.BOOLEAN) {
             do {
-                this.contenido.ejecutar(ambito);
+                const salida = this.contenido.ejecutar(ambito);
+                if (salida != null && salida != undefined) {
+                    if (salida.tipo == "201701015B") {
+                        break;
+                    }
+                    else if (salida.tipo == "201701015C") {
+                        continue;
+                    }
+                }
                 condi = this.condicion.ejecutar(ambito);
             } while (condi.valor);
         }

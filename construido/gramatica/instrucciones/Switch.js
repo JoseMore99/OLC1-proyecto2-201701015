@@ -11,16 +11,23 @@ class Switch extends instruccion_1.instruccion {
     }
     ejecutar(ambito) {
         const condi = this.condicion.ejecutar(ambito);
+        let casebul = true;
         if (this.listaCase != undefined) {
             for (const cases of this.listaCase) {
                 const Condi = cases.condicion.ejecutar(ambito);
                 const actual = this.condicion.ejecutar(ambito);
                 if (Condi.valor == actual.valor) {
-                    cases.ejecutar(ambito);
+                    const salida = cases.ejecutar(ambito);
+                    if (salida != null && salida != undefined) {
+                        if (salida.tipo == "201701015B") {
+                            casebul = false;
+                            break;
+                        }
+                    }
                 }
             }
         }
-        if (this.defecto != null) {
+        if (this.defecto != null && casebul) {
             this.defecto.ejecutar(ambito);
         }
     }

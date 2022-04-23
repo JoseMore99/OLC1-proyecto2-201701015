@@ -4,8 +4,8 @@ import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
 
 export class Declarar extends instruccion{
-    constructor(private tipo:tipo ,public id:string, private valor:Expresion, line:number, column:number){
-        super(line, column)
+    constructor(public tipo:tipo ,public id:string, private valor:Expresion, fila:number, columna:number){
+        super(fila, columna)
     }
     public ejecutar(ambito: ambito) {
         if (this.valor!=null){

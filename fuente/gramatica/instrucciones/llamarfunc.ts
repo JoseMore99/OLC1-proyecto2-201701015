@@ -15,6 +15,10 @@ import { instruccion } from "./instruccion"
                 for (let i = 0; i < this.parametros.length; i++) {
                     //VERIFICAR TIPOS!!
                     const valor = this.parametros[i].ejecutar(ambit);
+                    if (valor.type!=actual.parametros[i].tipo){
+                        console.log("ERROR SEMANTICO en llamarfuncion")
+                    }
+
                     EntornoG.AgregarVal(actual.parametros[i].id,valor.valor,valor.type)
                 }
                 actual.contenido.ejecutar(EntornoG);

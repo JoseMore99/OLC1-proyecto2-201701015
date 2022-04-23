@@ -4,8 +4,8 @@ exports.Declarar = void 0;
 const instruccion_1 = require("./instruccion");
 const retorno_1 = require("../expresion/retorno");
 class Declarar extends instruccion_1.instruccion {
-    constructor(tipo, id, valor, line, column) {
-        super(line, column);
+    constructor(tipo, id, valor, fila, columna) {
+        super(fila, columna);
         this.tipo = tipo;
         this.id = id;
         this.valor = valor;

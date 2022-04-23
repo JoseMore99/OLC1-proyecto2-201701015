@@ -10,6 +10,6 @@ export class Case extends instruccion{
     }
 
     public ejecutar(ambito: ambito) {
-        this.contenido.ejecutar(ambito)
+        return this.contenido.ejecutar(ambito)
     }
 }
