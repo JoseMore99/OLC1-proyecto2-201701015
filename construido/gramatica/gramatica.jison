@@ -18,6 +18,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
     const {Llamarfunc} = require('./instrucciones/llamarfunc')
     const {Break} = require('./instrucciones/Break')
     const {Continue} = require('./instrucciones/Continue')
+    const {Return} = require('./instrucciones/Return')
 %}
 
 %lex
@@ -46,6 +47,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "++"                return 'masmas';
 "--"                return 'menosmenos';
 "print"             return 'print';
+"println"           return 'println';
 "if"                return 'resif';
 "else"              return 'reselse';
 "while"             return 'reswhile';
@@ -63,6 +65,7 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "return"            return 'resreturn';
 "continue"          return 'rescontinue';
 "void"             return 'resvoid';
+"run"              return 'resrun';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -118,12 +121,16 @@ INSTRUCCION: IMPRIMIR            {$$=$1;}
         | INSTFUNC               {$$=$1;}
         | INSTBREAK              {$$=$1;}
         | INSTCONTINUE           {$$=$1;}
+        | INSTRETURN             {$$=$1;}
         | LLAMARFUNC  puntycom   {$$=$1;}
 ;
 
 INSTBREAK: resbreak puntycom {$$=new Break(@1.first_line,@1.first_column);}
 ;
 INSTCONTINUE: rescontinue puntycom {$$=new Continue(@1.first_line,@1.first_column);}
+;
+INSTRETURN: resreturn puntycom {$$=new Return(null, @1.first_line,@1.first_column);}
+        |   resreturn EXPRESION puntycom {$$=new Return($2, @1.first_line,@1.first_column);}
 ;
 
 INSTIF: resif pariz EXPRESION parder llaveiz BLOQUEINST llaveder INSTELSE  {$$=new If($3,$6,$8,@1.first_line,@1.first_column);}
@@ -190,7 +197,8 @@ TIPODATO: resint        {$$=tipo.NUMERO;}
         | reschar       {$$=tipo.CHAR;}
 ;
 
-IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,@1.first_line,@1.first_column);}
+IMPRIMIR: print pariz EXPRESION parder puntycom   {$$=new Print($3,false,@1.first_line,@1.first_column);}
+        | println pariz EXPRESION parder puntycom   {$$=new Print($3,true,@1.first_line,@1.first_column);}
 ;
 
 BLOQUEINST:INSTRUCCIONES        {$$=new Bloque($1,@1.first_line,@1.first_column)}

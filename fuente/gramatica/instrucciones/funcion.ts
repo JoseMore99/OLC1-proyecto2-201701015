@@ -10,5 +10,6 @@ import { instruccion } from "./instruccion"
     }
     public ejecutar(ambito: ambito) {
         ambito.AgregarFuncion(this.id,this)
+        
     }
  }

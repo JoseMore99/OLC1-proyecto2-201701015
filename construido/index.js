@@ -2,6 +2,7 @@ const parser = require('./gramatica/gramatica')
 const express = require('express')
 const {ambito} = require('./gramatica/simbolo/ambito')
 const cors=require('cors')
+const { Print } = require('./gramatica/instrucciones/print')
 
 const app = express()
 
@@ -24,7 +25,9 @@ app.post('/api', (req, res) => {
     } catch (error) {
         console.log(error)
     }
-    return res.send(JSON.stringify(resultado))
+    const respuesta = {"result":Print.consola};
+    Print.consola="";
+    return res.send(JSON.stringify(respuesta))
 })
 
 

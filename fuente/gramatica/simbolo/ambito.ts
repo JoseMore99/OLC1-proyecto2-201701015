@@ -9,6 +9,7 @@ export class ambito {
         this.variables=new Map()
         this.funciones = new Map()
     }
+    
 
     public AgregarVal(id:string, valor:any, tipo:tipo){
         let aux: ambito | null = this

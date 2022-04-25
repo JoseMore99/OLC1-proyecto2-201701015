@@ -1,8 +1,9 @@
 import { instruccion } from "./instruccion";
 import { ambito } from "../simbolo/ambito";
+import { Expresion } from "../expresion/expresion";
 
 export class Return extends instruccion{
-    constructor(private valor:any,fila:number, columna:number){
+    constructor(private valor:Expresion|null,fila:number, columna:number){
         super(fila, columna)
     }
     public ejecutar(ambito: ambito) {
