@@ -1,4 +1,5 @@
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { instruccion } from "./instruccion";
 
 export class Bloque extends instruccion{
@@ -21,5 +22,12 @@ export class Bloque extends instruccion{
             }
             
         }
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('BLOQUE');
+        for (const inst of this.instrucciones) {
+            nodo.agregarHijoAST(inst.getNodo())
+        }
+        return nodo;
     }
 }

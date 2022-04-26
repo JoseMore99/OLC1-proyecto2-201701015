@@ -1,4 +1,5 @@
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { tipo,tipos,Retorno } from "./retorno";
 
 export abstract class Expresion {
@@ -12,6 +13,8 @@ export abstract class Expresion {
     }
 
     public abstract ejecutar(ambito:ambito): Retorno;
+
+    public abstract getNodo():NodoAst;
 
 
     public tipoDom(tipo1: tipo, tipo2: tipo): tipo {

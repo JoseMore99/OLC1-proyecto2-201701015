@@ -1,4 +1,5 @@
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 
@@ -25,7 +26,12 @@ export class Nativo extends Expresion {
             return { valor: false, type: tipo.BOOLEAN }
         }
         return { valor: null, type: tipo.NULL }
-    };
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('nativo');
+        nodo.agregarHijo(this.valor.toString());
+        return nodo;
+    }
     }
 
 export enum tipoNat {

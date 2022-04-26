@@ -1,4 +1,5 @@
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 
 export abstract class instruccion {
 
@@ -12,6 +13,7 @@ export abstract class instruccion {
 
     public abstract ejecutar(ambito:ambito):any;
 
+    public abstract getNodo():NodoAst;
 
 
 }

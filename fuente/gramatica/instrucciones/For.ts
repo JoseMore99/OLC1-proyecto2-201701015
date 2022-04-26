@@ -1,6 +1,7 @@
 import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { Declarar } from "./declarar";
 import { instruccion } from "./instruccion";
 
@@ -30,5 +31,20 @@ export class For extends instruccion{
             console.log("Error semantico en for")
         }
 
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('FOR');
+        nodo.agregarHijo('for');
+        nodo.agregarHijo('(');
+        nodo.agregarHijoAST(this.declaracion.getNodo());
+        nodo.agregarHijo(';');
+        nodo.agregarHijoAST(this.condicion.getNodo());
+        nodo.agregarHijo(';');
+        nodo.agregarHijoAST(this.actualizar.getNodo());
+        nodo.agregarHijo(')');
+        nodo.agregarHijo('{');
+        nodo.agregarHijoAST(this.contenido.getNodo());
+        nodo.agregarHijo('}');
+        return nodo;
     }
 }

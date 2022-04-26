@@ -1,5 +1,6 @@
 import { Expresion } from "../expresion/expresion";
 import { ambito } from "../simbolo/ambito"
+import NodoAst from "../simbolo/NodoAst";
 import { instruccion } from "./instruccion"
 
  export class Llamarfunc extends instruccion{
@@ -36,5 +37,15 @@ import { instruccion } from "./instruccion"
        }else{
            console.log("ERROR SEMANTICO en llamarfuncion")
        }
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('LLAMADA');
+        nodo.agregarHijo(this.id);
+        nodo.agregarHijo('(');
+        for (const para of this.parametros) {
+            nodo.agregarHijoAST(para.getNodo());
+        }
+        nodo.agregarHijo(')');
+        return nodo;
     }
  }

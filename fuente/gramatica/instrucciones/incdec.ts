@@ -1,6 +1,7 @@
 
 import { Expresion } from "../expresion/expresion";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { instruccion } from "./instruccion";
 
 export class Incdec extends instruccion {
@@ -22,6 +23,20 @@ export class Incdec extends instruccion {
             }
         }
         return {valor:aux?.valor,type:aux?.tipo}
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('EXPRESION');
+        nodo.agregarHijo(this.iden);
+        if(this.tipo==tipoA.INCREMENTO){
+            nodo.agregarHijo('+');
+            nodo.agregarHijo('+');
+        }
+        else if(this.tipo==tipoA.DECREMENTO){
+            nodo.agregarHijo('-');
+            nodo.agregarHijo('-');
+        }
+        
+        return nodo;
     }
     
 }

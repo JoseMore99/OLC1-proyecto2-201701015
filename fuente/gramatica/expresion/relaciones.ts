@@ -1,6 +1,7 @@
 import { Expresion } from "./expresion";
 import { Retorno, tipo } from "./retorno";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 
 export class Relacional extends Expresion {
 
@@ -43,6 +44,34 @@ export class Relacional extends Expresion {
             return { valor: result, type: tipo.BOOLEAN }
         }
         return { valor: null, type: tipo.NULL }
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('RELACION');
+        nodo.agregarHijoAST(this.izquierda.getNodo());
+        if (this.tipo == TipoRel.IGUALIGUAL) {
+            nodo.agregarHijo('==');
+        } else if (this.tipo == TipoRel.DIFERENTE) {
+            nodo.agregarHijo('!=');
+        } else if (this.tipo == TipoRel.MAYOR) {
+            nodo.agregarHijo('>');
+        } else if (this.tipo == TipoRel.MAYOR_IGUAL) {
+            nodo.agregarHijo('>=');
+        } else if (this.tipo == TipoRel.MENOR) {
+            nodo.agregarHijo('<');
+        } else if (this.tipo == TipoRel.MENOR_IGUAL) {
+            nodo.agregarHijo('<=');
+        }
+         else if (this.tipo == TipoRel.AND) {
+            nodo.agregarHijo('&&');
+        }
+         else if (this.tipo == TipoRel.OR) {
+            nodo.agregarHijo('||');
+        }
+         else if (this.tipo == TipoRel.NOT) {
+            nodo.agregarHijo('!');
+        }
+        nodo.agregarHijoAST(this.derecha.getNodo());
+        return nodo;
     }
 }
 

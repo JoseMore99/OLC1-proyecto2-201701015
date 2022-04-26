@@ -1,6 +1,7 @@
 import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { instruccion } from "./instruccion";
 
 export class Dowhile extends instruccion{
@@ -26,5 +27,18 @@ export class Dowhile extends instruccion{
             console.log("Error semantico en while")
         }
 
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('DO WHILE');
+        nodo.agregarHijo('do')
+        nodo.agregarHijo('{');
+        nodo.agregarHijoAST(this.contenido.getNodo());
+        nodo.agregarHijo('}');
+        nodo.agregarHijo('while');
+        nodo.agregarHijo('(');
+        nodo.agregarHijoAST(this.condicion.getNodo());
+        nodo.agregarHijo(')');
+        nodo.agregarHijo(';');
+        return nodo;
     }
 }

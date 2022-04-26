@@ -1,6 +1,7 @@
 import { Expresion } from "./expresion";
 import { Retorno,tipo } from "./retorno";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 
 export class Aritmetica extends Expresion {
 
@@ -124,6 +125,26 @@ export class Aritmetica extends Expresion {
         }
 
         return { valor: null, type: tipo.NULL } ;
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('EXPRESION');
+        nodo.agregarHijoAST(this.izquierda.getNodo());
+        if (this.tipo == tipoArit.SUMA) {
+            nodo.agregarHijo('+');
+        } else if (this.tipo == tipoArit.RESTA) {
+            nodo.agregarHijo('-');
+        } else if (this.tipo == tipoArit.DIVISION) {
+            nodo.agregarHijo('*');
+        } else if (this.tipo == tipoArit.MULTIPLICACION) {
+            nodo.agregarHijo('/');
+        } else if (this.tipo == tipoArit.MODULO) {
+            nodo.agregarHijo('%');
+        } else if (this.tipo == tipoArit.POTENCIA) {
+            nodo.agregarHijo('^');
+        }
+        
+        nodo.agregarHijoAST(this.derecha.getNodo());
+        return nodo;
     }
     
 }

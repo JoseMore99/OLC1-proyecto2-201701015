@@ -1,6 +1,7 @@
 import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
 import { ambito } from "../simbolo/ambito";
+import NodoAst from "../simbolo/NodoAst";
 import { Case } from "./Case";
 import { instruccion } from "./instruccion";
 
@@ -32,5 +33,20 @@ export class Switch extends instruccion{
             this.defecto.ejecutar(ambito)
         }
        
+    }
+    public getNodo(): NodoAst {
+        let nodo = new NodoAst('SWITCH');
+        nodo.agregarHijo('switch');
+        nodo.agregarHijo('(');
+        nodo.agregarHijoAST(this.condicion.getNodo());
+        nodo.agregarHijo(')');
+        nodo.agregarHijo('{');
+        if(this.listaCase!=undefined){
+            for (const caso of this.listaCase) {
+                nodo.agregarHijoAST(caso.getNodo());
+            }
+        }
+        nodo.agregarHijo('}');
+        return nodo;
     }
 }
