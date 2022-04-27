@@ -1,6 +1,6 @@
 import { Expresion } from "../expresion/expresion";
 import { ambito } from "../simbolo/ambito";
-import NodoAst from "../simbolo/NodoAst";
+import {NodoAst} from "../simbolo/NodoAst";
 import { instruccion } from "./instruccion";
 
 

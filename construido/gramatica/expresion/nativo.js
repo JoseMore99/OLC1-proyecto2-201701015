@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tipoNat = exports.Nativo = void 0;
+const NodoAst_1 = require("../simbolo/NodoAst");
 const expresion_1 = require("./expresion");
 const retorno_1 = require("./retorno");
 class Nativo extends expresion_1.Expresion {
@@ -30,7 +31,11 @@ class Nativo extends expresion_1.Expresion {
         }
         return { valor: null, type: retorno_1.tipo.NULL };
     }
-    ;
+    getNodo() {
+        let nodo = new NodoAst_1.NodoAst('nativo');
+        nodo.agregarHijo(this.valor.toString());
+        return nodo;
+    }
 }
 exports.Nativo = Nativo;
 var tipoNat;

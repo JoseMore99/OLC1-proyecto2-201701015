@@ -1,7 +1,7 @@
 import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
 import { ambito } from "../simbolo/ambito";
-import NodoAst from "../simbolo/NodoAst";
+import {NodoAst} from "../simbolo/NodoAst";
 import { Case } from "./Case";
 import { instruccion } from "./instruccion";
 

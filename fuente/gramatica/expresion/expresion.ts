@@ -1,5 +1,5 @@
 import { ambito } from "../simbolo/ambito";
-import NodoAst from "../simbolo/NodoAst";
+import {NodoAst} from "../simbolo/NodoAst";
 import { tipo,tipos,Retorno } from "./retorno";
 
 export abstract class Expresion {

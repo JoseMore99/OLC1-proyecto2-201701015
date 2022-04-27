@@ -1,4 +1,4 @@
-export default class NodoAst {
+export  class NodoAst {
     public listaHijos: Array<NodoAst>;
   
     constructor(public valor: string) {

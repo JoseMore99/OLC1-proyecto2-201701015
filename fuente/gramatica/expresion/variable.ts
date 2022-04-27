@@ -1,7 +1,7 @@
 import { Expresion } from "./expresion";
 import { ambito } from "../simbolo/ambito";
 import { Retorno, tipo } from "./retorno";
-import NodoAst from "../simbolo/NodoAst";
+import {NodoAst} from "../simbolo/NodoAst";
 
 export class Variable extends Expresion{
     constructor(private id:string,line:number, column:number ){

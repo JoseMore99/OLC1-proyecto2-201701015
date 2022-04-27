@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Llamarfunc = void 0;
 const ambito_1 = require("../simbolo/ambito");
+const NodoAst_1 = require("../simbolo/NodoAst");
 const instruccion_1 = require("./instruccion");
 class Llamarfunc extends instruccion_1.instruccion {
     constructor(id, parametros, fila, columna) {
@@ -39,6 +40,16 @@ class Llamarfunc extends instruccion_1.instruccion {
         else {
             console.log("ERROR SEMANTICO en llamarfuncion");
         }
+    }
+    getNodo() {
+        let nodo = new NodoAst_1.NodoAst('LLAMADA');
+        nodo.agregarHijo(this.id);
+        nodo.agregarHijo('(');
+        for (const para of this.parametros) {
+            nodo.agregarHijoAST(para.getNodo());
+        }
+        nodo.agregarHijo(')');
+        return nodo;
     }
 }
 exports.Llamarfunc = Llamarfunc;

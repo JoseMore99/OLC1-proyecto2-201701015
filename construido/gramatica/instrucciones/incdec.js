@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tipoA = exports.Incdec = void 0;
+const NodoAst_1 = require("../simbolo/NodoAst");
 const instruccion_1 = require("./instruccion");
 class Incdec extends instruccion_1.instruccion {
     constructor(iden, tipo, fila, columna) {
@@ -22,6 +23,19 @@ class Incdec extends instruccion_1.instruccion {
             }
         }
         return { valor: aux === null || aux === void 0 ? void 0 : aux.valor, type: aux === null || aux === void 0 ? void 0 : aux.tipo };
+    }
+    getNodo() {
+        let nodo = new NodoAst_1.NodoAst('EXPRESION');
+        nodo.agregarHijo(this.iden);
+        if (this.tipo == tipoA.INCREMENTO) {
+            nodo.agregarHijo('+');
+            nodo.agregarHijo('+');
+        }
+        else if (this.tipo == tipoA.DECREMENTO) {
+            nodo.agregarHijo('-');
+            nodo.agregarHijo('-');
+        }
+        return nodo;
     }
 }
 exports.Incdec = Incdec;

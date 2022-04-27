@@ -167,6 +167,8 @@ DEFAULT: resdefaul dospunt BLOQUEINST {$$= new Case(null,$3,@1.first_line,@1.fir
 ;
 LLAMARFUNC: id pariz LISTAP parder  {$$=new Llamarfunc($1,$3,@1.first_line,@1.first_column);}
           | id pariz  parder  {$$=new Llamarfunc($1,[],@1.first_line,@1.first_column);}
+          | resrun id pariz LISTAP parder  {$$=new Llamarfunc($2,$4,@1.first_line,@1.first_column);}
+          | resrun id pariz  parder  {$$=new Llamarfunc($2,[],@1.first_line,@1.first_column);}
 ;
 
 LISTAP : LISTAP coma EXPRESION{ $1.push($3);$$ = $1;}

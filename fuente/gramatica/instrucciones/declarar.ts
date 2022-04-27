@@ -2,7 +2,7 @@ import { instruccion } from "./instruccion";
 import { ambito } from "../simbolo/ambito";
 import { Expresion } from "../expresion/expresion";
 import { tipo } from "../expresion/retorno";
-import NodoAst from "../simbolo/NodoAst";
+import {NodoAst} from "../simbolo/NodoAst";
 
 export class Declarar extends instruccion{
     constructor(public tipo:tipo ,public id:string, private valor:Expresion, fila:number, columna:number){

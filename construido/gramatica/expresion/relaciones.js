@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TipoRel = exports.Relacional = void 0;
 const expresion_1 = require("./expresion");
 const retorno_1 = require("./retorno");
+const NodoAst_1 = require("../simbolo/NodoAst");
 class Relacional extends expresion_1.Expresion {
     constructor(izquierda, derecha, tipo, fila, columna) {
         super(fila, columna);
@@ -50,6 +51,39 @@ class Relacional extends expresion_1.Expresion {
             return { valor: result, type: retorno_1.tipo.BOOLEAN };
         }
         return { valor: null, type: retorno_1.tipo.NULL };
+    }
+    getNodo() {
+        let nodo = new NodoAst_1.NodoAst('RELACION');
+        nodo.agregarHijoAST(this.izquierda.getNodo());
+        if (this.tipo == TipoRel.IGUALIGUAL) {
+            nodo.agregarHijo('==');
+        }
+        else if (this.tipo == TipoRel.DIFERENTE) {
+            nodo.agregarHijo('!=');
+        }
+        else if (this.tipo == TipoRel.MAYOR) {
+            nodo.agregarHijo('>');
+        }
+        else if (this.tipo == TipoRel.MAYOR_IGUAL) {
+            nodo.agregarHijo('>=');
+        }
+        else if (this.tipo == TipoRel.MENOR) {
+            nodo.agregarHijo('<');
+        }
+        else if (this.tipo == TipoRel.MENOR_IGUAL) {
+            nodo.agregarHijo('<=');
+        }
+        else if (this.tipo == TipoRel.AND) {
+            nodo.agregarHijo('&&');
+        }
+        else if (this.tipo == TipoRel.OR) {
+            nodo.agregarHijo('||');
+        }
+        else if (this.tipo == TipoRel.NOT) {
+            nodo.agregarHijo('!');
+        }
+        nodo.agregarHijoAST(this.derecha.getNodo());
+        return nodo;
     }
 }
 exports.Relacional = Relacional;

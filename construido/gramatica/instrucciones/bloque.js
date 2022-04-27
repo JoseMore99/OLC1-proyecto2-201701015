@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bloque = void 0;
 const ambito_1 = require("../simbolo/ambito");
+const NodoAst_1 = require("../simbolo/NodoAst");
 const instruccion_1 = require("./instruccion");
 class Bloque extends instruccion_1.instruccion {
     constructor(instrucciones, fila, columna) {
@@ -23,6 +24,13 @@ class Bloque extends instruccion_1.instruccion {
                 console.log(error);
             }
         }
+    }
+    getNodo() {
+        let nodo = new NodoAst_1.NodoAst('BLOQUE');
+        for (const inst of this.instrucciones) {
+            nodo.agregarHijoAST(inst.getNodo());
+        }
+        return nodo;
     }
 }
 exports.Bloque = Bloque;
