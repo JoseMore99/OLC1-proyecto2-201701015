@@ -1,5 +1,8 @@
 
 import {NodoAst} from './simbolo/NodoAst';
+
+import { exec } from 'child_process';
+var fs = require('fs');
 let cuerpo = '';
 let contador = 0;
 
@@ -12,6 +15,18 @@ export  function graficarArbol(arbolitos: NodoAst) {
       n0[label="${arbolitos.valor.replace('"', '\\"')}"];
       ${cuerpo}
     }`;
+    fs.writeFile('arbolAST.dot', principal, () => {});
+  exec(
+    'dot -Tsvg arbolAST.dot -o web/public/arbolAST.svg',
+    (error, stdout, stderr) => {
+      if (error) {
+        return;
+      }
+      if (stderr) {
+        return;
+      }
+    }
+  );
   return principal
 }
 function graphAST(texto: string, padre: NodoAst) {

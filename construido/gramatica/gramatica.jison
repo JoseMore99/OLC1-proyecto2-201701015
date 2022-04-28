@@ -77,12 +77,11 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "&&"                return 'and';
 "!"                 return 'not';
 
-
+("true"|"false")\b      return 'bool';
+[0-9]+[.][0-9]+\b    return 'decimal';
 [0-9]+\b                return 'numero';
-[0-9]+("."[0-9]+)?\b    return 'decimal';
 ([a-zA-Z])[a-zA-Z0-9_]*	return 'id';
 \'[^\']\'               return 'caracter';
-("true"|"false")\b      return 'bool';
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'cadena'; }
 
 <<EOF>>             return 'EOF';
@@ -176,10 +175,12 @@ LISTAP : LISTAP coma EXPRESION{ $1.push($3);$$ = $1;}
 ;
 
 //funciones y metodos
-INSTFUNC: id pariz PARAMETROS parder dospunt resvoid llaveiz BLOQUEINST llaveder      {$$= new Funcion($1,$8,$3,null,@1.first_line,@1.first_column);}
+INSTFUNC: id pariz PARAMETROS parder  llaveiz BLOQUEINST llaveder                     {$$= new Funcion($1,$6,$3,null,@1.first_line,@1.first_column);}
+        | id pariz parder  llaveiz BLOQUEINST llaveder                                {$$= new Funcion($1,$5,[],null,@1.first_line,@1.first_column);}
+        | id pariz PARAMETROS parder  dospunt resvoid llaveiz BLOQUEINST llaveder     {$$= new Funcion($1,$8,$3,null,@1.first_line,@1.first_column);}
         | id pariz parder dospunt resvoid llaveiz BLOQUEINST llaveder                 {$$= new Funcion($1,$7,[],null,@1.first_line,@1.first_column);}
-        | id pariz PARAMETROS parder dospunt TIPODATO llaveiz BLOQUEINST llaveder      {$$= new Funcion($1,$8,$3,$6,@1.first_line,@1.first_column);}
-        | id pariz parder dospunt TIPODATO llaveiz BLOQUEINST llaveder                 {$$= new Funcion($1,$7,[],$5,@1.first_line,@1.first_column);}
+        | id pariz PARAMETROS parder dospunt TIPODATO llaveiz BLOQUEINST llaveder     {$$= new Funcion($1,$8,$3,$6,@1.first_line,@1.first_column);}
+        | id pariz parder dospunt TIPODATO llaveiz BLOQUEINST llaveder                {$$= new Funcion($1,$7,[],$5,@1.first_line,@1.first_column);}
 ;
 
 PARAMETROS: PARAMETROS coma TIPODATO id       { $1.push(new Declarar($3,$4,null,@1.first_line,@1.first_column)); $$ =$1 }

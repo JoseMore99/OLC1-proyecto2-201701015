@@ -25,19 +25,18 @@ export class Declarar extends instruccion{
                 ambito.AgregarVal(this.id.toLowerCase(), 0, tipo.NUMERO)
             }
             else if(this.tipo==tipo.STRING){
-                ambito.AgregarVal(this.id.toLowerCase(), "", tipo.NUMERO)
+                ambito.AgregarVal(this.id.toLowerCase(), "", tipo.STRING)
             }
             else if(this.tipo==tipo.DECIMAL){
-                ambito.AgregarVal(this.id.toLowerCase(), 0, tipo.NUMERO)
+                ambito.AgregarVal(this.id.toLowerCase(), 0.0, tipo.DECIMAL)
             }
             else if(this.tipo==tipo.CHAR){
-                ambito.AgregarVal(this.id.toLowerCase(), '', tipo.NUMERO)
+                ambito.AgregarVal(this.id.toLowerCase(), '', tipo.CHAR)
             }
             else if(this.tipo==tipo.BOOLEAN){
-                ambito.AgregarVal(this.id.toLowerCase(), false, tipo.NUMERO)
+                ambito.AgregarVal(this.id.toLowerCase(), false, tipo.BOOLEAN)
             }
         }
-        
         
     }
     public getNodo(): NodoAst {

@@ -9,7 +9,6 @@ const  {NodoAst} = require('./gramatica/simbolo/NodoAst')
 const app = express()
 const dot=""
 
-
 app.use(express.json())
 app.use(cors())
 

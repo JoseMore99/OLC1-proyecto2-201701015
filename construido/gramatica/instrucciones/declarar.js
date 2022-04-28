@@ -30,16 +30,16 @@ class Declarar extends instruccion_1.instruccion {
                 ambito.AgregarVal(this.id.toLowerCase(), 0, retorno_1.tipo.NUMERO);
             }
             else if (this.tipo == retorno_1.tipo.STRING) {
-                ambito.AgregarVal(this.id.toLowerCase(), "", retorno_1.tipo.NUMERO);
+                ambito.AgregarVal(this.id.toLowerCase(), "", retorno_1.tipo.STRING);
             }
             else if (this.tipo == retorno_1.tipo.DECIMAL) {
-                ambito.AgregarVal(this.id.toLowerCase(), 0, retorno_1.tipo.NUMERO);
+                ambito.AgregarVal(this.id.toLowerCase(), 0.0, retorno_1.tipo.DECIMAL);
             }
             else if (this.tipo == retorno_1.tipo.CHAR) {
-                ambito.AgregarVal(this.id.toLowerCase(), '', retorno_1.tipo.NUMERO);
+                ambito.AgregarVal(this.id.toLowerCase(), '', retorno_1.tipo.CHAR);
             }
             else if (this.tipo == retorno_1.tipo.BOOLEAN) {
-                ambito.AgregarVal(this.id.toLowerCase(), false, retorno_1.tipo.NUMERO);
+                ambito.AgregarVal(this.id.toLowerCase(), false, retorno_1.tipo.BOOLEAN);
             }
         }
     }

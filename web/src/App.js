@@ -2,9 +2,8 @@
 import Editor from "@monaco-editor/react";
 import './App.css';
 import { useRef, useState } from 'react';
-//import { Graphviz } from 'graphviz-react';
 
-function App() {
+const App=()=> {
   const editorRef = useRef(null);
   const [valor,setValor]= useState('');
   const [resultado,setConsola]= useState('');
@@ -122,6 +121,7 @@ function App() {
         </div>
         <div>
         <button onClick={showGraph} className="bg-blue-500 hover:bg-blue-800 font-bold rounded py-2 px-10">AST</button>
+        
         </div>
         <div>
         <input 
@@ -131,10 +131,13 @@ function App() {
         />
         </div>
       </div>
+      <a href="/arbolAST.svg">Ver arbol</a>
     </div>
+    
     
     
   );
 }
 
 export default App;
+

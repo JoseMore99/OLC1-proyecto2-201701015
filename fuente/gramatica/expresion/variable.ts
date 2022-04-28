@@ -8,7 +8,7 @@ export class Variable extends Expresion{
         super(line, column)
     }
     public ejecutar(ambito: ambito):Retorno {
-            const aux = ambito.RetornarVal(this.id)
+            const aux = ambito.RetornarVal(this.id.toLowerCase())
             if(aux != null) {
                 return {valor:aux.valor, type:aux.tipo}
             }

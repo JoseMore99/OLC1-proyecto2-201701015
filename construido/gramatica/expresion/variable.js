@@ -10,7 +10,7 @@ class Variable extends expresion_1.Expresion {
         this.id = id;
     }
     ejecutar(ambito) {
-        const aux = ambito.RetornarVal(this.id);
+        const aux = ambito.RetornarVal(this.id.toLowerCase());
         if (aux != null) {
             return { valor: aux.valor, type: aux.tipo };
         }

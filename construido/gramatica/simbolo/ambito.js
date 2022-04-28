@@ -48,7 +48,7 @@ class ambito {
     RetornarFunc(id) {
         let aux = this;
         while (aux != null) {
-            if (aux.variables.has(id)) {
+            if (aux.funciones.has(id)) {
                 const retorno = aux.funciones.get(id);
                 return retorno;
             }

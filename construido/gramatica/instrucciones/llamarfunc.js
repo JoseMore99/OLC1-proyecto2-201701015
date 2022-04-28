@@ -11,14 +11,14 @@ class Llamarfunc extends instruccion_1.instruccion {
         this.parametros = parametros;
     }
     ejecutar(ambit) {
-        const actual = ambit.funciones.get(this.id);
+        const actual = ambit.RetornarFunc(this.id);
         if (actual) {
             if (this.parametros.length == actual.parametros.length) {
                 const EntornoG = new ambito_1.ambito(ambit.global());
                 for (let i = 0; i < this.parametros.length; i++) {
                     const valor = this.parametros[i].ejecutar(ambit);
                     if (valor.type != actual.parametros[i].tipo) {
-                        console.log("ERROR SEMANTICO en llamarfuncion");
+                        console.log("ERROR SEMANTICO en llamarfuncion tipo");
                     }
                     EntornoG.AgregarVal(actual.parametros[i].id, valor.valor, valor.type);
                 }
@@ -34,11 +34,11 @@ class Llamarfunc extends instruccion_1.instruccion {
                 }
             }
             else {
-                console.log("ERROR SEMANTICO en llamarfuncion");
+                console.log("ERROR SEMANTICO en llamarfuncion cantidad de parametros");
             }
         }
         else {
-            console.log("ERROR SEMANTICO en llamarfuncion");
+            console.log("ERROR SEMANTICO en llamarfuncion no existe");
         }
     }
     getNodo() {

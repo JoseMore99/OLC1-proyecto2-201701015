@@ -52,7 +52,7 @@ export class ambito {
     public RetornarFunc(id:string):Funcion|undefined{
         let aux: ambito | null = this
         while(aux!=null){
-            if(aux.variables.has(id)){
+            if(aux.funciones.has(id)){
                 const retorno:Funcion|undefined = aux.funciones.get(id)
                  return retorno
             }

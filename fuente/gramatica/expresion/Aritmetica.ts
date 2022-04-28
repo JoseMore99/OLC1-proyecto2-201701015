@@ -7,7 +7,7 @@ export class Aritmetica extends Expresion {
 
     constructor(private izquierda: Expresion, private derecha: Expresion, private tipo: tipoArit, fila: number, columna: number) {
         super(fila, columna);
-    }
+    } 
     
     public ejecutar(ambito:ambito): Retorno {
         const ValorIz = this.izquierda.ejecutar(ambito);
@@ -18,26 +18,26 @@ export class Aritmetica extends Expresion {
                 return { valor: (ValorIz.valor.toString() + ValorDer.valor.toString()), type: tipo.STRING };
             }else if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
                 if(ValorIz.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor.charCodeAt(0) + ValorDer.valor), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor.charCodeAt(0) + ValorDer.valor), type: Dom };
                  }
                 if(ValorDer.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor + ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor + ValorDer.valor.charCodeAt(0)), type: Dom };
                  }
                 if(ValorIz.type==tipo.BOOLEAN){
                     if(ValorIz.type){
-                        return { valor: (1 + ValorDer.valor), type: tipo.NUMERO };
+                        return { valor: (1 + ValorDer.valor), type: Dom };
                     }else{
-                        return { valor: (0 + ValorDer.valor), type: tipo.NUMERO };
+                        return { valor: (0 + ValorDer.valor), type: Dom };
                     }
                  }
                 if(ValorDer.type==tipo.BOOLEAN){
                     if(ValorIz.type){
-                        return { valor: (ValorIz.valor + 1), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor + 1), type: Dom };
                     }else{
-                        return { valor: (ValorIz.valor + 0), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor + 0), type: Dom };
                     }    
                 }
-                return { valor: (ValorIz.valor + ValorDer.valor), type: tipo.NUMERO };
+                return { valor: (ValorIz.valor + ValorDer.valor), type: Dom };
             } 
             else {
                 console.log("Error Semantico")
@@ -45,26 +45,26 @@ export class Aritmetica extends Expresion {
         }else if (this.tipo == tipoArit.RESTA) {
             if (Dom == tipo.NUMERO|| Dom == tipo.DECIMAL) {
                 if(ValorIz.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor.charCodeAt(0) - ValorDer.valor), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor.charCodeAt(0) - ValorDer.valor), type: Dom };
                  }
                 if(ValorDer.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor - ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor - ValorDer.valor.charCodeAt(0)), type: Dom };
                  }
                 if(ValorIz.type==tipo.BOOLEAN){
                     if(ValorIz.type){
-                        return { valor: (1 - ValorDer.valor), type: tipo.NUMERO };
+                        return { valor: (1 - ValorDer.valor), type: Dom };
                     }else{
-                        return { valor: (0 - ValorDer.valor), type: tipo.NUMERO };
+                        return { valor: (0 - ValorDer.valor), type: Dom };
                     }
                  }
                 if(ValorDer.type==tipo.BOOLEAN){
                     if(ValorIz.type){
-                        return { valor: (ValorIz.valor - 1), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor - 1), type: Dom };
                     }else{
-                        return { valor: (ValorIz.valor - 0), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor - 0), type: Dom};
                     }    
                 }
-                return { valor: (ValorIz.valor - ValorDer.valor), type: tipo.NUMERO };
+                return { valor: (ValorIz.valor - ValorDer.valor), type: Dom };
             } 
             else {
                 console.log("Error Semantico")
@@ -72,12 +72,14 @@ export class Aritmetica extends Expresion {
         }else if (this.tipo == tipoArit.MULTIPLICACION) {
             if (Dom == tipo.NUMERO|| Dom == tipo.DECIMAL) {
                 if(ValorIz.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor.charCodeAt(0) * ValorDer.valor), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor.charCodeAt(0) * ValorDer.valor), type: Dom };
                  }
                 if(ValorDer.type==tipo.CHAR){
-                    return { valor: (ValorIz.valor * ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
-                 }
-                return { valor: (ValorIz.valor * ValorDer.valor), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor * ValorDer.valor.charCodeAt(0)), type: Dom };
+                }
+                      return { valor: (ValorIz.valor * ValorDer.valor), type: Dom };
+                 
+               
             } 
             else {
                 console.log("Error Semantico")
@@ -89,12 +91,12 @@ export class Aritmetica extends Expresion {
                 } 
                 else {
                     if(ValorIz.type==tipo.CHAR){
-                        return { valor: (ValorIz.valor.charCodeAt(0) / ValorDer.valor), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor.charCodeAt(0) / ValorDer.valor), type: Dom };
                      }
                     if(ValorDer.type==tipo.CHAR){
-                        return { valor: (ValorIz.valor / ValorDer.valor.charCodeAt(0)), type: tipo.NUMERO };
+                        return { valor: (ValorIz.valor / ValorDer.valor.charCodeAt(0)), type: Dom };
                      }
-                    return { valor: (ValorIz.valor / ValorDer.valor), type: tipo.NUMERO };
+                    return { valor: (ValorIz.valor / ValorDer.valor), type: Dom };
                 }
             } 
             else {
@@ -104,12 +106,12 @@ export class Aritmetica extends Expresion {
             if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
                 let pote:number=ValorIz.valor;
                 if (ValorDer.valor==0){
-                    return { valor: 1, type: tipo.NUMERO };
+                    return { valor: 1, type: Dom };
                 }
                 for (let i = 1; i < ValorDer.valor; i++) {
                     pote*=pote;
                 }
-                return { valor: (pote), type: tipo.NUMERO };
+                return { valor: (pote), type: Dom };
                 
             } 
             else {
@@ -117,7 +119,7 @@ export class Aritmetica extends Expresion {
             }
         }else if (this.tipo == tipoArit.MODULO) {
             if (Dom == tipo.NUMERO || Dom == tipo.DECIMAL) {
-                return { valor: (ValorIz.valor%ValorDer.valor), type: tipo.NUMERO };
+                return { valor: (ValorIz.valor%ValorDer.valor), type: Dom };
             } 
             else {
                 console.log("Error Semantico")
