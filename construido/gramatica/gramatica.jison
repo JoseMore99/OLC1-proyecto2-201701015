@@ -1,6 +1,7 @@
 %{
  const {Aritmetica,tipoArit} = require('./expresion/Aritmetica')
 const {Relacional,TipoRel} = require('./expresion/relaciones')
+const {Extras,TipoFunc} = require('./expresion/Extras')
 const {tipo} = require('./expresion/retorno')
 const {Incdec,tipoA} = require('./instrucciones/incdec')
 const {Variable} = require('./expresion/variable')
@@ -64,8 +65,14 @@ const {Nativo,tipoNat} = require('./expresion/nativo')
 "break"             return 'resbreak';
 "return"            return 'resreturn';
 "continue"          return 'rescontinue';
-"void"             return 'resvoid';
-"run"              return 'resrun';
+"void"              return 'resvoid';
+"run"               return 'resrun';
+"round"             return 'resround';
+"toLower"           return 'restolower';
+"toUpper"           return 'restoupper';
+"toString"          return 'restostring';
+"typeof"            return 'restypeof';
+"length"            return 'reslength';
 "=="                return 'igualigual';
 "!="                return 'noigual';
 "="                 return 'igual';
@@ -232,6 +239,7 @@ EXPRESION : menos EXPRESION %prec Umenos      {$$= new Aritmetica($2,new Nativo(
         | LLAMARFUNC                          {$$= $1;}
         | pariz EXPRESION parder              {$$ = $2;}
         | NATIVO                              {$$ = $1;}
+        | FUNCIONES                           {$$ = $1;}
         | id                                  {$$= new Variable($1,@1.first_line, @1.first_column);}
 ;
 
@@ -240,4 +248,12 @@ NATIVO :  numero        {$$=new Nativo($1,tipoNat.NUMERO, @1.first_line, @1.firs
         | cadena        {$$=new Nativo($1,tipoNat.STRING, @1.first_line, @1.first_column)}
         | bool          {$$=new Nativo($1,tipoNat.BOOLEAN, @1.first_line, @1.first_column)}
         | caracter      {$$=new Nativo($1,tipoNat.CHAR, @1.first_line, @1.first_column)}
+;
+
+FUNCIONES: restolower pariz EXPRESION parder    {$$= new Extras($3,TipoFunc.LOWER, @1.first_line, @1.first_column)}
+        |  restoupper pariz EXPRESION parder    {$$= new Extras($3,TipoFunc.UPPER, @1.first_line, @1.first_column)}
+        |  restostring pariz EXPRESION parder   {$$= new Extras($3,TipoFunc.TOSTRING, @1.first_line, @1.first_column)}
+        |  resround pariz EXPRESION parder      {$$= new Extras($3,TipoFunc.ROUND, @1.first_line, @1.first_column)}
+        |  restypeof pariz EXPRESION parder     {$$= new Extras($3,TipoFunc.TYPEOF, @1.first_line, @1.first_column)}
+        |  reslength pariz EXPRESION parder     {$$= new Extras($3,TipoFunc.LEN, @1.first_line, @1.first_column)}
 ;
