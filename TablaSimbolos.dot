@@ -1,0 +1,5 @@
+digraph tabla{ 
+    nodo [label=<<TABLE> 
+        <TR><TD >Numero</TD><TD>id</TD><TD>tipo</TD><TD>valor</TD><TD>clase</TD><TD>fila</TD><TD>columna</TD></TR><TR><TD>1</TD><TD>a</TD><TD>int</TD><TD>undefined</TD><TD>variable</TD><TD>1</TD><TD>0</TD></TR><TR><TD>2</TD><TD>f</TD><TD>string</TD><TD>undefined</TD><TD>variable</TD><TD>2</TD><TD>0</TD></TR><TR><TD>3</TD><TD>jose</TD><TD>int</TD><TD>undefined</TD><TD>funcion</TD><TD>1</TD><TD>0</TD></TR>
+    </TABLE>>];
+    }

@@ -9,3 +9,4 @@ class simbolo {
     }
 }
 exports.simbolo = simbolo;
+simbolo.Simbolos = new Array();

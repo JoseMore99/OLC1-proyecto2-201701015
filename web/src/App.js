@@ -120,7 +120,7 @@ const App=()=> {
         <button onClick={showValue} className="bg-blue-500 hover:bg-blue-800 font-bold rounded py-2 px-10">Ejecutar</button>
         </div>
         <div>
-        <button onClick={showGraph} className="bg-blue-500 hover:bg-blue-800 font-bold rounded py-2 px-10">AST</button>
+        <button onClick={showGraph} className="bg-blue-500 hover:bg-blue-800 font-bold rounded py-2 px-10">Generar Reportes</button>
         
         </div>
         <div>
@@ -132,6 +132,7 @@ const App=()=> {
         </div>
       </div>
       <a href="/arbolAST.svg">Ver arbol</a>
+      <a href="/TablaSimbolos.svg">Ver Tabla de Simbolos</a>
     </div>
     
     

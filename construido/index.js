@@ -1,5 +1,6 @@
 const parser = require('./gramatica/gramatica')
 const {graficarArbol} = require('./gramatica/graficar')
+const {graficarTabla} = require('./gramatica/graficartabla')
 const express = require('express')
 const {ambito} = require('./gramatica/simbolo/ambito')
 const cors=require('cors')
@@ -47,6 +48,7 @@ app.post('/ast', (req, res) => {
             instrucciones.agregarHijoAST(iterar.getNodo())
         }
         init.agregarHijoAST(instrucciones)
+        graficarTabla()
         respuesta = {"result":graficarArbol(init)};
     } catch (error) {
         console.log(error)
