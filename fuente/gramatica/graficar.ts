@@ -16,9 +16,7 @@ export  function graficarArbol(arbolitos: NodoAst) {
       ${cuerpo}
     }`;
     fs.writeFile('arbolAST.dot', principal, () => {});
-  exec(
-    'dot -Tsvg arbolAST.dot -o web/public/arbolAST.svg',
-    (error, stdout, stderr) => {
+  exec('dot -Tsvg arbolAST.dot -o web/public/arbolAST.svg',(error, stdout, stderr) => {
       if (error) {
         return;
       }
